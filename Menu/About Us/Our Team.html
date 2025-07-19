@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Team | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&family=Caveat:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR "THE HANDS AND HEARTS" EXPERIENCE --- */
+        :root {
+            --bg-light: #F7F5F2; /* Soft Cream */
+            --text-light: #4A5568; /* Slate Blue */
+            --heading-light: #3a4555;
+            --accent-terracotta: #C68B74;
+            --accent-terracotta-darker: #b37963;
+
+            --bg-dark: #2D3748; /* Deep Charcoal Blue */
+            --text-dark: #E2E8F0;
+            --heading-dark: #FFFFFF;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+        }
+        .body-serif { font-family: 'Lora', serif; }
+        .script-font { font-family: 'Caveat', cursive; }
+        
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .filter-btn.active, html.dark .filter-btn:hover { background-color: var(--accent-terracotta); color: white; }
+        html.dark .filter-btn { background-color: #4A5568; color: var(--text-dark); }
+        html.dark .profile-card { background-color: #4A5568; }
+        html.dark .standard-card { background-color: #4A5568; }
+
+        /* --- Hero Section --- */
+        .hero { 
+            height: 90vh;
+            background-image: url('https://i.pinimg.com/originals/a0/05/85/a00585197825316413b632906427382d.jpg');
+            background-size: cover;
+            background-position: center 70%;
+        }
+        .hero-overlay { background: linear-gradient(to top, rgba(45, 55, 72, 0.7), rgba(45, 55, 72, 0.2)); }
+        html.dark .hero-overlay { background: linear-gradient(to top, rgba(45, 55, 72, 0.8), rgba(45, 55, 72, 0.4)); }
+
+        /* --- Animations & Interactivity --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s ease-out, transform 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .profile-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .profile-details {
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+        .profile-card:hover .profile-details {
+            transform: translateY(0);
+        }
+        .profile-card-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .profile-card:hover .profile-card-image::after {
+            opacity: 1;
+        }
+
+        /* --- Filter Buttons --- */
+        .filter-btn {
+            background-color: #FFFFFF;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--accent-terracotta);
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        /* --- Fixed Controls --- */
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.2); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative flex items-center justify-center text-center text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl font-semibold">The Heart of the Sanctuary</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light max-w-3xl mx-auto">Meet the skilled hands and compassionate hearts dedicated to your well-being.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center reveal">
+                <div class="text-center md:text-left">
+                    <h2 class="text-4xl md:text-5xl mb-4">A Guiding Hand</h2>
+                    <p class="text-xl font-light text-text-light/80 dark:text-text-dark/80 mb-6">Serey, Founder & Spa Director</p>
+                    <div class="body-serif text-lg leading-relaxed space-y-4">
+                        <p>Drawing from her grandmother's wisdom and her own journey through the world of modern wellness, Serey personally guides the philosophy and training of our entire team.</p>
+                        <p class="p-4 border-l-4 border-accent-terracotta italic">"My greatest joy is seeing this team grow. Each member was chosen not only for their exceptional skill but for their genuine kindness and passion for healing. They are the true heart of Modern->Spa."</p>
+                    </div>
+                </div>
+                <div>
+                     <img src="https://i.pinimg.com/564x/a3/14/3c/a3143c4d9b43e5e412a87a64e1c4e724.jpg" alt="A warm, welcoming portrait of the spa founder, Serey." class="rounded-lg shadow-xl w-full h-auto object-cover">
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 bg-slate-50 dark:bg-slate-900/50">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-4xl md:text-5xl mb-4">Our Guild of Artisans</h2>
+                    <p class="text-lg max-w-2xl mx-auto">A collective of passionate, certified professionals.</p>
+                </div>
+
+                <div id="filter-container" class="flex justify-center flex-wrap gap-4 mb-12 reveal">
+                    <button class="filter-btn active py-2 px-6 rounded-full font-medium text-lg" data-filter="all">All Team</button>
+                    <button class="filter-btn py-2 px-6 rounded-full font-medium text-lg" data-filter="massage">Massage Specialists</button>
+                    <button class="filter-btn py-2 px-6 rounded-full font-medium text-lg" data-filter="skin">Skin Experts</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div class="profile-card reveal rounded-lg shadow-md bg-white" data-category="massage">
+                        <div class="relative profile-card-image">
+                            <img src="https://i.pinimg.com/564x/6c/22/e0/6c22e0e0e0a514b8a4a5538e3a24d08c.jpg" class="w-full h-96 object-cover object-top" alt="Portrait of Dara P.">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 text-white z-10">
+                                <h3 class="text-2xl font-semibold">Dara P.</h3>
+                                <p class="font-light">Lead Massage Therapist</p>
+                            </div>
+                            <div class="absolute inset-0 bg-white dark:bg-slate-800 p-4 profile-details flex flex-col justify-center text-center">
+                                <p class="text-lg font-semibold">8+ Years Experience</p>
+                                <p class="mt-2 text-md">Specialties: Deep Tissue, Herbal Compress, Stress Relief</p>
+                                <p class="script-font text-2xl mt-4 text-accent-terracotta">"Massage is a silent conversation between two souls."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-card reveal rounded-lg shadow-md bg-white" data-category="skin">
+                        <div class="relative profile-card-image">
+                            <img src="https://i.pinimg.com/564x/e7/87/35/e787353f413340578b3f2023a1a3e6a2.jpg" class="w-full h-96 object-cover object-top" alt="Portrait of Leakhena S.">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 text-white z-10">
+                                <h3 class="text-2xl font-semibold">Leakhena S.</h3>
+                                <p class="font-light">Lead Esthetician</p>
+                            </div>
+                             <div class="absolute inset-0 bg-white dark:bg-slate-800 p-4 profile-details flex flex-col justify-center text-center">
+                                <p class="text-lg font-semibold">10+ Years Experience</p>
+                                <p class="mt-2 text-md">Specialties: Anti-Aging Facials, Acne Solutions, LED Therapy</p>
+                                <p class="script-font text-2xl mt-4 text-accent-terracotta">"To reveal someone's natural glow is my greatest passion."</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="profile-card reveal rounded-lg shadow-md bg-white" data-category="massage">
+                        <div class="relative profile-card-image">
+                            <img src="https://i.pinimg.com/564x/64/a3/2b/64a32b699c20a9a8f2762a543946e38a.jpg" class="w-full h-96 object-cover object-top" alt="Portrait of Vuthy K.">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 text-white z-10">
+                                <h3 class="text-2xl font-semibold">Vuthy K.</h3>
+                                <p class="font-light">Wellness Therapist</p>
+                            </div>
+                             <div class="absolute inset-0 bg-white dark:bg-slate-800 p-4 profile-details flex flex-col justify-center text-center">
+                                <p class="text-lg font-semibold">5+ Years Experience</p>
+                                <p class="mt-2 text-md">Specialties: Aromatherapy, Hot Stone, Reflexology</p>
+                                <p class="script-font text-2xl mt-4 text-accent-terracotta">"Healing begins with a single, intentional touch."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-card reveal rounded-lg shadow-md bg-white" data-category="skin">
+                        <div class="relative profile-card-image">
+                            <img src="https://i.pinimg.com/564x/11/a9/36/11a936a5c3639423ab63080e729a4e3b.jpg" class="w-full h-96 object-cover object-top" alt="Portrait of Sreyneang T.">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 text-white z-10">
+                                <h3 class="text-2xl font-semibold">Sreyneang T.</h3>
+                                <p class="font-light">Holistic Esthetician</p>
+                            </div>
+                             <div class="absolute inset-0 bg-white dark:bg-slate-800 p-4 profile-details flex flex-col justify-center text-center">
+                                <p class="text-lg font-semibold">6+ Years Experience</p>
+                                <p class="mt-2 text-md">Specialties: Hydrating Facials, Natural Skincare, Facial Massage</p>
+                                <p class="script-font text-2xl mt-4 text-accent-terracotta">"Healthy skin is a reflection of a happy soul."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-6xl mx-auto text-center reveal">
+                 <h2 class="text-4xl md:text-5xl mb-12">Our Commitment to Mastery</h2>
+                 <div class="grid md:grid-cols-3 gap-8">
+                     <div class="standard-card bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm">
+                         <h3 class="text-2xl text-accent-terracotta mb-3">Continuous Education</h3>
+                         <p>Our therapists engage in over 50 hours of advanced training annually, mastering both ancient techniques and modern innovations.</p>
+                     </div>
+                      <div class="standard-card bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm">
+                         <h3 class="text-2xl text-accent-terracotta mb-3">Certified Excellence</h3>
+                         <p>Every team member is fully certified and licensed, ensuring the highest standards of professionalism and safety for our guests.</p>
+                     </div>
+                      <div class="standard-card bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm">
+                         <h3 class="text-2xl text-accent-terracotta mb-3">Holistic Approach</h3>
+                         <p>We train our team not just in technique, but in the art of listening, empathy, and creating a truly safe and nurturing space.</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 bg-slate-50 dark:bg-slate-900/50">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Ready to Meet Us?</h2>
+                <p class="text-lg leading-relaxed mb-10">Our team is here to guide you on your wellness journey. This Saturday is a beautiful day to start. Book a treatment and experience their incredible care firsthand.</p>
+                <a href="index.html" class="inline-block text-xl font-medium py-4 px-10 rounded-full text-white bg-accent-terracotta hover:bg-accent-terracotta-darker transition-colors">
+                    Book Your Treatment
+                </a>
+                <p class="mt-12 text-sm">Are you a passionate wellness professional? We are always looking for compassionate hearts to join our family. <a href="#" class="underline hover:text-accent-terracotta">Learn about careers at Modern->Spa.</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-accent-terracotta">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- TEAM FILTER SCRIPT ---
+            const filterContainer = document.getElementById('filter-container');
+            const profileCards = document.querySelectorAll('.profile-card');
+            
+            filterContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    // Update active button style
+                    filterContainer.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+
+                    const filter = e.target.getAttribute('data-filter');
+
+                    profileCards.forEach(card => {
+                        card.style.display = 'none'; // Hide all first
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                           card.style.display = 'block'; // Show matching ones
+                        }
+                    });
+                }
+            });
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

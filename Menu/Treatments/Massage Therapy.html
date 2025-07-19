@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Art of Healing Touch | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR AN AWESOME, IMMERSIVE EXPERIENCE --- */
+        :root {
+            --bg-light: #F4F1ED;
+            --text-light: #4D443D;
+            --heading-light: #3C2F21;
+            --accent-gold: #BCA06B;
+            --accent-gold-darker: #a18858;
+
+            --bg-dark: #1a202c;
+            --text-dark: #A0AEC0;
+            --heading-dark: #E2E8F0;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+        }
+        .khmer-heading {
+            font-family: 'Moul', cursive; /* A beautiful Khmer font, requires import if not available */
+            font-family: 'Playfair Display', serif; /* Fallback */
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* --- Dark Mode --- */
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 {
+            color: var(--heading-dark);
+        }
+        html.dark .ritual-card {
+            background-color: #2d3748;
+            border-color: #4a5568;
+        }
+        html.dark .themed-icon {
+            stroke: var(--heading-dark);
+        }
+
+        /* --- Hero Section & Parallax --- */
+        .hero {
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/originals/9f/f7/6d/9ff76d7557e4e09f7a4fc8f49a888a7c.jpg');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed; /* Parallax effect */
+        }
+        .hero-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.2));
+        }
+
+        /* --- Scroll-Triggered Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Staggered animation for card children */
+        .reveal.visible .reveal-child {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s;
+        }
+
+        /* --- Ritual Card Styling --- */
+        .ritual-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .ritual-card:hover {
+            transform: translateY(-10px) !important; /* Override reveal transform */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+        }
+        .ritual-image {
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .ritual-card:hover .ritual-image {
+            transform: scale(1.05);
+        }
+        .book-button {
+            background-color: var(--accent-gold);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .book-button:hover {
+            background-color: var(--accent-gold-darker);
+        }
+
+        /* --- Fixed Elements: Back Link & Theme Toggle --- */
+        .fixed-controls {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+        .control-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 9999px;
+            padding: 0.75rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .control-btn:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        html.dark .control-btn {
+             background-color: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative flex items-center justify-center text-center text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-4 reveal visible">
+            <h2 class="text-xl md:text-2xl font-light tracking-widest uppercase reveal-child">Modern->Spa Presents</h2>
+            <h1 class="khmer-heading text-5xl md:text-8xl my-4 reveal-child">បទពិសោធន៍នៃការព្យាបាល</h1>
+            <p class="text-4xl md:text-6xl font-bold font-sans reveal-child">The Art of Healing Touch</p>
+        </div>
+        <div class="absolute bottom-10 z-10">
+            <svg class="w-8 h-8 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6 max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <img src="https://i.pinimg.com/564x/06/66/d8/0666d81387d77b8cfd5218d63f060195.jpg" alt="Traditional Khmer herbs and spices in bowls" class="rounded-lg shadow-xl w-full h-auto object-cover">
+                </div>
+                <div class="reveal">
+                    <h2 class="text-4xl md:text-5xl mb-6">Rooted in Ancient Wisdom</h2>
+                    <p class="text-lg leading-relaxed mb-4">Our journey begins not with techniques, but with tradition. We honor the legacy of the *Kru Khmer*, the traditional healers of Cambodia, whose wisdom has been passed through generations. Their belief in the body's natural energy flow, or *Sen*, and the healing power of native botanicals forms the heart of every treatment we offer.</p>
+                    <p class="text-lg leading-relaxed">We blend this ancestral knowledge with a modern, anatomical understanding to create therapies that are both profoundly authentic and remarkably effective.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 bg-white/20 dark:bg-black/20">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl mb-4">Our Signature Rituals</h2>
+                    <p class="text-lg max-w-3xl mx-auto">Each ritual is a complete sensory journey, designed to guide you toward a specific state of well-being.</p>
+                </div>
+
+                <div class="space-y-20">
+                    <article class="ritual-card grid md:grid-cols-2 gap-0 reveal">
+                        <div class="p-8 md:p-12 flex flex-col justify-center">
+                            <h3 class="text-3xl md:text-4xl mb-4">Royal Compress Ritual</h3>
+                            <p class="mb-6 leading-relaxed">Feel tension dissolve as steamed poultices, rich with ginger, plai, and lemongrass, are rhythmically pressed along your body's energy pathways. This ancient heat therapy soothes deep-seated aches, boosts circulation, and leaves you feeling completely renewed.</p>
+                            <div class="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                                <span class="font-semibold">90 Minutes</span>
+                                <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full">Book This Ritual</a>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden rounded-r-lg">
+                            <img src="https://i.pinimg.com/736x/c1/22/49/c12249f1916f3b6c8e72d94f44d19c59.jpg" alt="Herbal compress massage" class="ritual-image w-full h-full object-cover min-h-[300px]">
+                        </div>
+                    </article>
+
+                    <article class="ritual-card grid md:grid-cols-2 gap-0 reveal">
+                         <div class="overflow-hidden rounded-l-lg md:order-1">
+                            <img src="https://i.pinimg.com/564x/4d/52/12/4d5212372551e15e24b5d6a8943bfd12.jpg" alt="Aromatic oil therapy" class="ritual-image w-full h-full object-cover min-h-[300px]">
+                        </div>
+                        <div class="p-8 md:p-12 flex flex-col justify-center md:order-2">
+                            <h3 class="text-3xl md:text-4xl mb-4">Jasmine Oil Elixir</h3>
+                            <p class="mb-6 leading-relaxed">A symphony of long, flowing strokes and gentle pressure characterizes this deeply calming experience. We use our signature, hand-blended jasmine oil to nourish the skin, quiet the mind, and restore emotional balance. A true escape for the senses.</p>
+                            <div class="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                                <span class="font-semibold">60 / 90 Minutes</span>
+                                <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full">Book This Ritual</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="ritual-card grid md:grid-cols-2 gap-0 reveal">
+                        <div class="p-8 md:p-12 flex flex-col justify-center">
+                            <h3 class="text-3xl md:text-4xl mb-4">Angkor Stone Meditation</h3>
+                            <p class="mb-6 leading-relaxed">Harnessing the grounding energy of the earth, smooth volcanic stones are heated and placed on key points of the body. The penetrating warmth, combined with therapeutic massage, melts muscular tension, quiets the mind, and anchors you in a state of profound peace.</p>
+                            <div class="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                                <span class="font-semibold">75 Minutes</span>
+                                <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full">Book This Ritual</a>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden rounded-r-lg">
+                            <img src="https://i.pinimg.com/736x/56/e5/d1/56e5d13ac44772c040de04517d1daadc.jpg" alt="Hot stone therapy" class="ritual-image w-full h-full object-cover min-h-[300px]">
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="relative h-[60vh] bg-black flex items-center justify-center text-center text-white my-24 reveal">
+            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-40">
+                <source src="https://videos.pexels.com/video-files/853874/853874-hd_1920_1080_25fps.mp4" type="video/mp4">
+            </video>
+            <div class="relative z-10 p-4">
+                <h2 class="text-4xl md:text-5xl font-bold font-sans">Your Sanctuary Awaits</h2>
+                <p class="text-xl mt-4 max-w-2xl">Every detail is crafted for your peace and comfort.</p>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 text-center">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Begin Your Journey</h2>
+                <p class="text-lg leading-relaxed mb-10">You are moments away from tranquility. Reserve your preferred ritual and allow us to guide you on a path to complete well-being. We are open daily from 10:00 AM to 10:00 PM.</p>
+                <a href="mailto:spa@modernserenity.com?subject=Booking Inquiry" class="book-button inline-block text-xl font-medium py-4 px-10 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                    Reserve Your Experience
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center border-t border-gray-200 dark:border-gray-800">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-accent-gold">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = docElement.classList.contains('dark') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

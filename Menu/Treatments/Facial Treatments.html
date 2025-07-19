@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Skin Atelier | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR "THE SKIN ATELIER" EXPERIENCE --- */
+        :root {
+            --bg-light: #FFFFFF;
+            --base-light: #F9F9F9;
+            --text-light: #6D6A6A;
+            --heading-light: #3D3A3A;
+            --accent-blush: #E6C5C5;
+            --accent-blush-darker: #D9B3B3;
+
+            --bg-dark: #191919;
+            --base-dark: #212121;
+            --text-dark: #D1D1D1;
+            --heading-dark: #EFEFEF;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .section-base {
+            background-color: var(--base-light);
+            transition: background-color 0.5s ease;
+        }
+
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .section-base { background-color: var(--base-dark); }
+        html.dark .concern-card { background-color: #2a2a2a; border-color: #3f3f3f; }
+        html.dark .concern-card:hover { border-color: var(--accent-blush); }
+        html.dark .facial-card { border-color: #3f3f3f; }
+
+        /* --- Hero Section & Video --- */
+        .hero { height: 100vh; background-color: #EAEAEA; }
+        .hero video { object-fit: cover; }
+        .hero h1 { color: #3D3A3A; } .hero p { color: #6D6A6A; }
+
+        /* --- Animations & Interactivity --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.6s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        /* --- Skin Concern Finder --- */
+        .concern-card {
+            background-color: white;
+            border: 1px solid #EAEAEA;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+        }
+        .concern-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blush);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
+        }
+        .concern-card svg { transition: stroke 0.3s ease; }
+        .concern-card:hover svg { stroke: var(--accent-blush); }
+
+        /* --- Buttons & Fixed Controls --- */
+        .book-button {
+            background-color: var(--accent-blush);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px -5px rgba(230, 197, 197, 0.5);
+        }
+        .book-button:hover {
+            background-color: var(--accent-blush-darker);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(230, 197, 197, 0.6);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(0, 0, 0, 0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: #3D3A3A; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.1); }
+        html.dark .control-btn { background-color: rgba(255, 255, 255, 0.1); color: white; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative overflow-hidden flex items-center justify-center text-center">
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full">
+             <source src="https://videos.pexels.com/video-files/5674532/5674532-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl">The Skin Atelier</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light">Bespoke Facials for a Luminous You.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6 section-base">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Your Skin is a Living Canvas</h2>
+                <p class="text-lg leading-relaxed mb-16">Our philosophy begins with a deep understanding of your unique skin story. Before we touch, we listen. We then design a personalized treatment, selecting potent, bio-active ingredients to create visible, lasting results. This is where science meets artistry.</p>
+                
+                <h3 class="text-3xl mb-8">What is your skin's current chapter?</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div class="concern-card rounded-lg p-6 flex flex-col items-center justify-center" data-target="luminescence-facial">
+                        <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.648L17.25 21.75l-.352-1.102a3.375 3.375 0 00-2.455-2.456l-1.102-.352 1.102-.352a3.375 3.375 0 002.455-2.455l.352-1.102.352 1.102a3.375 3.375 0 002.455 2.455l1.102.352-1.102.352a3.375 3.375 0 00-2.455 2.456z"/></svg>
+                        <span class="font-medium">Dull & Tired</span>
+                    </div>
+                    <div class="concern-card rounded-lg p-6 flex flex-col items-center justify-center" data-target="clarity-facial">
+                        <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286z"/></svg>
+                        <span class="font-medium">Blemishes</span>
+                    </div>
+                    <div class="concern-card rounded-lg p-6 flex flex-col items-center justify-center" data-target="sculpt-facial">
+                        <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M21.75 12h-2.25m-1.666 5.834L16.5 16.5M4.5 12H2.25m1.666-5.834L5.5 5.5M12 21.75V19.5"/></svg>
+                        <span class="font-medium">Aging Signs</span>
+                    </div>
+                    <div class="concern-card rounded-lg p-6 flex flex-col items-center justify-center" data-target="hydro-facial">
+                        <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.362-3.797zM12 12.75H12A2.25 2.25 0 009.75 15v3A2.25 2.25 0 0012 20.25h0A2.25 2.25 0 0014.25 18v-3A2.25 2.25 0 0012 12.75z"/></svg>
+                        <span class="font-medium">Dehydrated</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-7xl mx-auto space-y-20">
+                
+                <article id="luminescence-facial" class="facial-card reveal grid md:grid-cols-2 gap-0 overflow-hidden rounded-lg border">
+                    <div class="p-8 md:p-12">
+                        <p class="text-sm uppercase tracking-widest text-accent-blush font-medium mb-2">Best for: Dull & Tired Skin</p>
+                        <h3 class="text-4xl mb-4">The Luminescence Facial</h3>
+                        <p class="mb-6">This is artistry in a bottle. A potent elixir of Vitamin C and fruit-derived AHAs works to dissolve dullness and reveal the fresh skin beneath. A cooling pearl-infused mask completes the ritual, leaving your skin with an immediate, ethereal glow.</p>
+                        <ul class="space-y-2">
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Artistry:</b> Gentle enzymatic peel, Vitamin C infusion, brightening mask.</li>
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Result:</b> Visibly brighter, even-toned, and radiantly alive.</li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t dark:border-gray-700 flex items-center justify-between">
+                             <span class="font-semibold text-lg">60 Minutes</span>
+                             <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full text-sm">Reserve Your Glow</a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-200"><img src="https://i.pinimg.com/564x/b8/d1/36/b8d1369793132711e53139389f41042b.jpg" alt="A pearlescent, glowing serum texture" class="w-full h-full object-cover min-h-[400px]"></div>
+                </article>
+                
+                <article id="clarity-facial" class="facial-card reveal grid md:grid-cols-2 gap-0 overflow-hidden rounded-lg border">
+                    <div class="bg-gray-200 md:order-1"><img src="https://i.pinimg.com/564x/a4/09/ce/a409ce24151a66a3bd2b12384a55314f.jpg" alt="A light green, clarifying gel mask texture" class="w-full h-full object-cover min-h-[400px]"></div>
+                    <div class="p-8 md:p-12 md:order-2">
+                        <p class="text-sm uppercase tracking-widest text-accent-blush font-medium mb-2">Best for: Blemish-Prone & Congested Skin</p>
+                        <h3 class="text-4xl mb-4">The Clarity Facial</h3>
+                        <p class="mb-6">A rebalancing masterpiece for troubled complexions. This facial begins with a deep, ultrasonic cleanse to purify pores, followed by a clarifying mask with Centella Asiatica and salicylic acid to calm inflammation. High-frequency technology provides an antibacterial finishing touch.</p>
+                        <ul class="space-y-2">
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Artistry:</b> Deep pore cleansing, gentle extractions, calming mask, High-Frequency.</li>
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Result:</b> A calm, clear, and beautifully balanced complexion.</li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t dark:border-gray-700 flex items-center justify-between">
+                             <span class="font-semibold text-lg">75 Minutes</span>
+                             <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full text-sm">Reserve Your Clarity</a>
+                        </div>
+                    </div>
+                </article>
+
+                 <article id="sculpt-facial" class="facial-card reveal grid md:grid-cols-2 gap-0 overflow-hidden rounded-lg border">
+                    <div class="p-8 md:p-12">
+                        <p class="text-sm uppercase tracking-widest text-accent-blush font-medium mb-2">Best for: Signs of Aging & Loss of Firmness</p>
+                        <h3 class="text-4xl mb-4">The Sculpt & Renew Facial</h3>
+                        <p class="mb-6">A testament to timeless beauty. This advanced treatment uses peptides and plant-based collagen to rebuild skin structure. A specialized lymphatic drainage massage lifts and sculpts facial contours, while targeted Red LED light therapy stimulates cellular renewal for a visibly firmer, plumper appearance.</p>
+                         <ul class="space-y-2">
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Artistry:</b> Bio-active peptides, lymphatic massage, Red LED therapy.</li>
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Result:</b> Firmer, smoother skin with softened fine lines.</li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t dark:border-gray-700 flex items-center justify-between">
+                             <span class="font-semibold text-lg">90 Minutes</span>
+                             <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full text-sm">Reserve Your Renewal</a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-200"><img src="https://i.pinimg.com/564x/0f/ce/f0/0fcef07e4d89053228a6493f010373a0.jpg" alt="Woman receiving a facial massage" class="w-full h-full object-cover min-h-[400px]"></div>
+                </article>
+                
+                 <article id="hydro-facial" class="facial-card reveal grid md:grid-cols-2 gap-0 overflow-hidden rounded-lg border">
+                    <div class="bg-gray-200 md:order-1"><img src="https://i.pinimg.com/564x/cc/86/e1/cc86e1e21b42416b9d6a4a621124618e.jpg" alt="Clear hyaluronic acid serum" class="w-full h-full object-cover min-h-[400px]"></div>
+                    <div class="p-8 md:p-12 md:order-2">
+                        <p class="text-sm uppercase tracking-widest text-accent-blush font-medium mb-2">Best for: Dry, Dehydrated, & Stressed Skin</p>
+                        <h3 class="text-4xl mb-4">The Hydro-Infusion Facial</h3>
+                        <p class="mb-6">Like a drink of water for your skin. This intensely hydrating ritual immerses your skin in multi-molecular hyaluronic acid and Cambodian aloe vera. A chilled cryo-globe massage soothes and de-puffs, locking in moisture for a dewy, supple, and deeply quenched complexion.</p>
+                        <ul class="space-y-2">
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Artistry:</b> Hyaluronic layering, aloe mask, cryo-globe massage.</li>
+                           <li><b class="font-medium text-heading-light dark:text-heading-dark">The Result:</b> Plump, hydrated skin that feels comfortable and looks dewy.</li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t dark:border-gray-700 flex items-center justify-between">
+                             <span class="font-semibold text-lg">60 Minutes</span>
+                             <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full text-sm">Reserve Your Hydration</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 text-center section-base">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Reveal Your Masterpiece</h2>
+                <p class="text-lg leading-relaxed mb-10">Your journey to radiant skin begins today. A luminous weekend awaits you here in Phnom Penh. Book a consultation with our skin artisans and let us compose the perfect treatment for your unique canvas.</p>
+                <a href="mailto:spa@modernserenity.com?subject=Facial Treatment Consultation" class="book-button inline-block text-xl font-medium py-4 px-10 rounded-full">
+                    Book Your Consultation
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-accent-blush">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- SKIN CONCERN FINDER SCRIPT ---
+            const concernCards = document.querySelectorAll('.concern-card');
+            concernCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const targetId = card.dataset.target;
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            });
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

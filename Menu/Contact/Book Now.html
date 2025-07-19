@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Now | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR THE BOOKING EXPERIENCE --- */
+        :root {
+            --bg-light: #F9FAFB; /* Light Grey */
+            --base-light: #FFFFFF;
+            --text-light: #374151; /* Cool Gray */
+            --heading-light: #111827; /* Darker Gray */
+            --accent-green: #1E4B40; /* Deep Emerald */
+            --accent-green-hover: #14352c;
+            
+            --bg-dark: #111827; /* Dark Gray-Blue */
+            --base-dark: #1F2937;
+            --text-dark: #D1D5DB;
+            --heading-dark: #F9FAFB;
+            --accent-green-dark: #388E7A;
+            --accent-green-dark-hover: #2e7a6c;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4, label {
+            font-family: 'Poppins', sans-serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 600;
+        }
+        
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark label { color: var(--heading-dark); }
+        html.dark .form-container, html.dark .summary-card { background-color: var(--base-dark); border-color: #374151; }
+        html.dark .form-input, html.dark .form-select { background-color: #374151; border-color: #4B5563; color: var(--text-dark); }
+        html.dark .form-input:focus, html.dark .form-select:focus { border-color: var(--accent-green-dark); box-shadow: 0 0 0 2px var(--accent-green-dark); }
+        html.dark .step-indicator { background-color: #374151; }
+        html.dark .step-indicator.active { background-color: var(--accent-green-dark); }
+        html.dark .time-slot:not(:disabled):hover { background-color: #374151; }
+        html.dark .time-slot.selected { background-color: var(--accent-green-dark); border-color: var(--accent-green-dark); color: white; }
+        html.dark .btn-primary { background-color: var(--accent-green-dark); }
+        html.dark .btn-primary:hover { background-color: var(--accent-green-dark-hover); }
+        html.dark .btn-secondary { color: var(--text-dark); border-color: #4B5563; }
+        html.dark .btn-secondary:hover { background-color: #374151; }
+
+        /* --- Form & Layout --- */
+        .form-container, .summary-card {
+            background-color: var(--base-light);
+            border: 1px solid #E5E7EB;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+        .form-step { display: none; }
+        .form-step.active { display: block; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #D1D5DB;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 2px var(--accent-green);
+        }
+
+        /* --- Step Indicator --- */
+        .step-indicator {
+            width: 2.5rem; height: 0.5rem;
+            background-color: #E5E7EB;
+            border-radius: 99px;
+            transition: background-color 0.4s ease;
+        }
+        .step-indicator.active { background-color: var(--accent-green); }
+
+        /* --- Time Slots & Calendar --- */
+        .time-slot {
+            border: 1px solid #D1D5DB;
+            transition: all 0.2s ease;
+        }
+        .time-slot:not(:disabled):hover {
+            background-color: #F3F4F6;
+            border-color: var(--accent-green);
+        }
+        .time-slot.selected {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+            font-weight: 500;
+        }
+        .time-slot:disabled {
+            background-color: #F3F4F6;
+            color: #9CA3AF;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* --- Buttons --- */
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.2s ease; }
+        .btn-primary { background-color: var(--accent-green); color: white; }
+        .btn-primary:hover { background-color: var(--accent-green-hover); transform: translateY(-1px); }
+        .btn-secondary { background-color: transparent; color: var(--text-light); border: 1px solid #D1D5DB; }
+        .btn-secondary:hover { background-color: #F3F4F6; }
+
+        /* --- Fixed Controls (Re-used) --- */
+        .fixed-controls { position: fixed; top: 1rem; right: 1rem; z-index: 100; display: flex; gap: 0.5rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.5); backdrop-filter: blur(5px); border: 1px solid #E5E7EB; border-radius: 9999px; padding: 0.5rem; color: #374151; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.8); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); border-color: #4B5563; color: white; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="text-center max-w-2xl mx-auto mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold">Reserve Your Sanctuary</h1>
+        <p class="text-lg mt-2">A few simple steps to begin your journey of well-being.</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8 items-start">
+        
+        <div class="lg:col-span-2 form-container p-6 md:p-8">
+            <div id="booking-form-content">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 id="step-title" class="text-2xl font-bold">Step 1: Select Your Treatment</h2>
+                    <div class="flex items-center gap-2">
+                        <div id="step-1-indicator" class="step-indicator active"></div>
+                        <div id="step-2-indicator" class="step-indicator"></div>
+                        <div id="step-3-indicator" class="step-indicator"></div>
+                        <div id="step-4-indicator" class="step-indicator"></div>
+                    </div>
+                </div>
+
+                <form id="booking-form">
+                    <div id="step-1" class="form-step active space-y-4">
+                        <div>
+                            <label for="service-category" class="block mb-2 text-md">Treatment Category</label>
+                            <select id="service-category" class="form-select">
+                                <option value="">-- Choose a category --</option>
+                                <option value="massage">Massage Therapy</option>
+                                <option value="facial">Facial Treatments</option>
+                                <option value="body">Body Treatments</option>
+                                <option value="package">Spa Packages</option>
+                            </select>
+                        </div>
+                        <div id="treatment-selection-container" class="hidden">
+                            <label for="treatment" class="block mb-2 text-md">Specific Treatment</label>
+                            <select id="treatment" class="form-select"></select>
+                        </div>
+                    </div>
+
+                    <div id="step-2" class="form-step">
+                        <p class="text-center mb-4 text-lg">Selected Date: <span id="selected-date-display" class="font-semibold"></span></p>
+                        <div id="calendar-container" class="grid grid-cols-7 gap-1 text-center mb-6">
+                            </div>
+                        <h3 class="text-xl font-semibold mb-4 text-center">Available Times</h3>
+                        <div id="time-slots-container" class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                            </div>
+                    </div>
+                    
+                    <div id="step-3" class="form-step space-y-4">
+                         <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="first-name" class="block mb-2 text-md">First Name</label>
+                                <input type="text" id="first-name" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="last-name" class="block mb-2 text-md">Last Name</label>
+                                <input type="text" id="last-name" class="form-input" required>
+                            </div>
+                         </div>
+                         <div>
+                            <label for="email" class="block mb-2 text-md">Email Address</label>
+                            <input type="email" id="email" class="form-input" required>
+                         </div>
+                         <div>
+                            <label for="phone" class="block mb-2 text-md">Phone Number</label>
+                            <input type="tel" id="phone" class="form-input">
+                         </div>
+                         <div>
+                            <label for="notes" class="block mb-2 text-md">Special Requests or Notes</label>
+                            <textarea id="notes" rows="3" class="form-textarea"></textarea>
+                         </div>
+                         <div class="flex items-start">
+                             <input type="checkbox" id="policy" class="mt-1 h-4 w-4 rounded border-gray-300 text-accent-green focus:ring-accent-green">
+                             <label for="policy" class="ml-2 text-sm">I agree to the <a href="#" class="underline hover:text-accent-green">24-hour cancellation policy</a>.</label>
+                         </div>
+                    </div>
+
+                    <div id="step-4" class="form-step text-center">
+                        <h3 class="text-2xl font-bold mb-4">Please Confirm Your Reservation</h3>
+                        <div id="final-summary" class="text-left bg-gray-50 dark:bg-slate-700 p-4 rounded-lg space-y-2">
+                           </div>
+                        <p class="text-sm mt-4">No payment is required now. You will pay at the spa. A confirmation will be sent to your email.</p>
+                    </div>
+
+                    <div id="form-navigation" class="flex justify-between mt-8">
+                        <button type="button" id="back-btn" class="btn btn-secondary hidden">Back</button>
+                        <button type="button" id="next-btn" class="btn btn-primary ml-auto" disabled>Next</button>
+                        <button type="submit" id="confirm-btn" class="btn btn-primary ml-auto hidden">Confirm My Booking</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="confirmation-message" class="hidden text-center p-8">
+                 <svg class="w-20 h-20 text-accent-green dark:text-accent-green-dark mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                 <h2 class="text-3xl font-bold mb-2">Your Reservation is Confirmed!</h2>
+                 <p id="confirmation-text" class="text-lg"></p>
+                 <div class="mt-8 flex justify-center gap-4">
+                     <button class="btn btn-primary">Add to Calendar</button>
+                     <a href="index.html" class="btn btn-secondary">Explore More</a>
+                 </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1 summary-card p-6 hidden lg:block sticky top-8">
+            <h3 class="text-2xl font-bold mb-4 border-b pb-3">Your Reservation</h3>
+            <div class="space-y-4">
+                <div id="summary-image-container" class="h-40 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                    <p class="text-gray-400">Select a treatment</p>
+                </div>
+                <div>
+                    <p class="text-sm font-medium">TREATMENT</p>
+                    <p id="summary-treatment" class="text-lg font-semibold">--</p>
+                </div>
+                <div>
+                    <p class="text-sm font-medium">DATE & TIME</p>
+                    <p id="summary-datetime" class="text-lg font-semibold">--</p>
+                </div>
+                 <div>
+                    <p class="text-sm font-medium">DURATION</p>
+                    <p id="summary-duration" class="text-lg font-semibold">--</p>
+                </div>
+                 <div class="border-t pt-4">
+                    <p class="text-sm font-medium">ESTIMATED PRICE</p>
+                    <p id="summary-price" class="text-3xl font-bold">--</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const services = {
+                massage: [
+                    { name: 'Aromatic Oil Relaxation', duration: '60/90 Min', price: '$45 / $65' },
+                    { name: 'Khmer Herbal Compress', duration: '90 Min', price: '$55' },
+                    { name: 'Volcanic Hot Stone', duration: '75 Min', price: '$60' },
+                ],
+                facial: [
+                    { name: 'The Luminescence Facial', duration: '60 Min', price: '$65' },
+                    { name: 'The Clarity Facial', duration: '75 Min', price: '$75' },
+                    { name: 'The Hydro-Infusion Facial', duration: '60 Min', price: '$60' },
+                ],
+                body: [
+                    { name: 'Terra Detox Wrap', duration: '75 Min', price: '$70' },
+                    { name: 'Lumina Salt Polish', duration: '60 Min', price: '$50' },
+                ],
+                package: [
+                    { name: 'The Serenity Journey', duration: '3 Hours', price: '$120' },
+                    { name: 'The Radiance Ritual', duration: '3.5 Hours', price: '$150' },
+                ]
+            };
+            const serviceImages = {
+                massage: 'https://i.pinimg.com/564x/4d/52/12/4d5212372551e15e24b5d6a8943bfd12.jpg',
+                facial: 'https://i.pinimg.com/564x/b8/d1/36/b8d1369793132711e53139389f41042b.jpg',
+                body: 'https://i.pinimg.com/564x/27/7d/53/277d531eda6c65971485a3c749964177.jpg',
+                package: 'https://i.pinimg.com/564x/12/f9/9f/12f99f2d1e8f395b210438c35a843588.jpg'
+            };
+
+            // --- STATE MANAGEMENT ---
+            let currentStep = 1;
+            const bookingDetails = {
+                category: null,
+                treatment: null,
+                date: null,
+                time: null,
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                notes: ''
+            };
+
+            // --- DOM ELEMENTS ---
+            const stepTitle = document.getElementById('step-title');
+            const stepIndicators = [document.getElementById('step-1-indicator'), document.getElementById('step-2-indicator'), document.getElementById('step-3-indicator'), document.getElementById('step-4-indicator')];
+            const formSteps = [document.getElementById('step-1'), document.getElementById('step-2'), document.getElementById('step-3'), document.getElementById('step-4')];
+            const backBtn = document.getElementById('back-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const confirmBtn = document.getElementById('confirm-btn');
+            const categorySelect = document.getElementById('service-category');
+            const treatmentContainer = document.getElementById('treatment-selection-container');
+            const treatmentSelect = document.getElementById('treatment');
+            
+            // Summary elements
+            const summaryTreatment = document.getElementById('summary-treatment');
+            const summaryDatetime = document.getElementById('summary-datetime');
+            const summaryDuration = document.getElementById('summary-duration');
+            const summaryPrice = document.getElementById('summary-price');
+            const summaryImageContainer = document.getElementById('summary-image-container');
+
+            // --- FUNCTIONS ---
+            function updateUI() {
+                // Update Step Title and Indicator
+                stepTitle.textContent = `Step ${currentStep}: ${['Select Your Treatment', 'Choose Date & Time', 'Your Details', 'Confirm Reservation'][currentStep - 1]}`;
+                stepIndicators.forEach((ind, i) => ind.classList.toggle('active', i < currentStep));
+
+                // Show/Hide Form Steps
+                formSteps.forEach((step, i) => step.classList.toggle('active', i + 1 === currentStep));
+
+                // Show/Hide Buttons
+                backBtn.classList.toggle('hidden', currentStep === 1);
+                nextBtn.classList.toggle('hidden', currentStep === 4);
+                confirmBtn.classList.toggle('hidden', currentStep !== 4);
+                
+                validateStep();
+            }
+            
+            function updateSummary() {
+                const selectedService = services[bookingDetails.category]?.find(s => s.name === bookingDetails.treatment);
+                
+                summaryTreatment.textContent = bookingDetails.treatment || '--';
+                summaryDatetime.textContent = (bookingDetails.date && bookingDetails.time) ? `${bookingDetails.date}, ${bookingDetails.time}` : '--';
+                summaryDuration.textContent = selectedService?.duration || '--';
+                summaryPrice.textContent = selectedService?.price ? selectedService.price.split('/')[0].trim() : '--';
+
+                if (bookingDetails.category && serviceImages[bookingDetails.category]) {
+                    summaryImageContainer.innerHTML = `<img src="${serviceImages[bookingDetails.category]}" class="w-full h-full object-cover rounded-lg">`;
+                } else {
+                    summaryImageContainer.innerHTML = `<p class="text-gray-400">Select a treatment</p>`;
+                }
+            }
+            
+            function populateTreatments() {
+                const category = categorySelect.value;
+                bookingDetails.category = category;
+                
+                if (category && services[category]) {
+                    treatmentSelect.innerHTML = '<option value="">-- Choose a treatment --</option>';
+                    services[category].forEach(service => {
+                        const option = document.createElement('option');
+                        option.value = service.name;
+                        option.textContent = `${service.name} (${service.duration}) - ${service.price}`;
+                        treatmentSelect.appendChild(option);
+                    });
+                    treatmentContainer.classList.remove('hidden');
+                } else {
+                    treatmentContainer.classList.add('hidden');
+                }
+                bookingDetails.treatment = null;
+                treatmentSelect.value = '';
+                updateSummary();
+                validateStep();
+            }
+
+            function generateCalendar() {
+                const calendarContainer = document.getElementById('calendar-container');
+                const today = new Date(2025, 6, 19); // Saturday, July 19, 2025
+                const month = today.getMonth();
+                const year = today.getFullYear();
+                
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                calendarContainer.innerHTML = '<div class="font-semibold">Su</div><div class="font-semibold">Mo</div><div class="font-semibold">Tu</div><div class="font-semibold">We</div><div class="font-semibold">Th</div><div class="font-semibold">Fr</div><div class="font-semibold">Sa</div>';
+
+                for(let i = 0; i < firstDay; i++) {
+                    calendarContainer.innerHTML += '<div></div>';
+                }
+
+                for(let day = 1; day <= daysInMonth; day++) {
+                    const dayEl = document.createElement('button');
+                    dayEl.textContent = day;
+                    dayEl.className = 'p-2 rounded-full transition-colors';
+                    if (day < today.getDate()) {
+                        dayEl.disabled = true;
+                        dayEl.className += ' text-gray-400';
+                    } else {
+                        dayEl.onclick = () => selectDate(day, month, year);
+                        dayEl.className += ' hover:bg-gray-200 dark:hover:bg-gray-700';
+                    }
+                    if (day === today.getDate()) {
+                       dayEl.className += ' bg-accent-green text-white dark:bg-accent-green-dark';
+                       selectDate(day, month, year);
+                    }
+                    calendarContainer.appendChild(dayEl);
+                }
+            }
+
+            function selectDate(day, month, year) {
+                const date = new Date(year, month, day);
+                bookingDetails.date = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('selected-date-display').textContent = bookingDetails.date;
+
+                document.querySelectorAll('#calendar-container button').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.classList.toggle('bg-accent-green', false);
+                        btn.classList.toggle('text-white', false);
+                         btn.classList.toggle('dark:bg-accent-green-dark', false);
+                    }
+                });
+                event.target.classList.add('bg-accent-green', 'text-white', 'dark:bg-accent-green-dark');
+                
+                bookingDetails.time = null;
+                generateTimeSlots();
+                updateSummary();
+                validateStep();
+            }
+
+            function generateTimeSlots() {
+                const times = ['10:00 AM', '11:30 AM', '01:00 PM', '02:30 PM', '04:00 PM', '05:30 PM', '07:00 PM'];
+                const container = document.getElementById('time-slots-container');
+                container.innerHTML = '';
+                times.forEach(time => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = time;
+                    btn.className = 'time-slot p-2 rounded-md';
+                    // Simulate some slots being booked
+                    if (Math.random() > 0.7) {
+                        btn.disabled = true;
+                    } else {
+                         btn.onclick = () => selectTime(time);
+                    }
+                    container.appendChild(btn);
+                });
+            }
+            
+            function selectTime(time) {
+                bookingDetails.time = time;
+                document.querySelectorAll('#time-slots-container button').forEach(btn => btn.classList.remove('selected'));
+                event.target.classList.add('selected');
+                updateSummary();
+                validateStep();
+            }
+            
+            function validateStep() {
+                let isValid = false;
+                switch(currentStep) {
+                    case 1:
+                        isValid = !!bookingDetails.treatment;
+                        break;
+                    case 2:
+                        isValid = !!bookingDetails.date && !!bookingDetails.time;
+                        break;
+                    case 3:
+                        const firstName = document.getElementById('first-name').value;
+                        const email = document.getElementById('email').value;
+                        const policy = document.getElementById('policy').checked;
+                        isValid = firstName.trim() !== '' && email.includes('@') && policy;
+                        break;
+                    case 4:
+                        isValid = true;
+                        break;
+                }
+                nextBtn.disabled = !isValid;
+            }
+
+            // --- EVENT LISTENERS ---
+            categorySelect.addEventListener('change', populateTreatments);
+            treatmentSelect.addEventListener('change', (e) => {
+                bookingDetails.treatment = e.target.value;
+                updateSummary();
+                validateStep();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < 4) {
+                    currentStep++;
+                    if(currentStep === 4) {
+                        const finalSummary = document.getElementById('final-summary');
+                        finalSummary.innerHTML = `
+                            <p><strong>Treatment:</strong> ${bookingDetails.treatment}</p>
+                            <p><strong>Date & Time:</strong> ${bookingDetails.date} at ${bookingDetails.time}</p>
+                            <p><strong>Name:</strong> ${document.getElementById('first-name').value} ${document.getElementById('last-name').value}</p>
+                            <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
+                        `;
+                    }
+                    updateUI();
+                }
+            });
+
+            backBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                }
+            });
+            
+            document.getElementById('booking-form').addEventListener('input', validateStep);
+            document.getElementById('policy').addEventListener('change', validateStep);
+
+            document.getElementById('booking-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                document.getElementById('booking-form-content').classList.add('hidden');
+                const confirmationMessage = document.getElementById('confirmation-message');
+                const confirmationText = document.getElementById('confirmation-text');
+                const firstName = document.getElementById('first-name').value;
+                
+                confirmationText.textContent = `Thank you, ${firstName}. A confirmation with all the details has been sent to your email. We look forward to welcoming you on ${bookingDetails.date}.`;
+                confirmationMessage.classList.remove('hidden');
+            });
+
+
+            // --- INITIALIZATION ---
+            generateCalendar();
+            updateUI();
+            
+             // Theme switcher logic from previous pages
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hours & Locations | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        /* --- CUSTOM STYLES FOR THE "OUR DOORS ARE OPEN" EXPERIENCE --- */
+        :root {
+            --bg-light: #F9F7F4; /* Soft Stone */
+            --base-light: #FFFFFF;
+            --text-light: #524e4a;
+            --heading-light: #4D645A; /* Muted Jade Green */
+            --accent-gold: #BCA06B;
+
+            --bg-dark: #2F3634; /* Deep Forest */
+            --base-dark: #3E4644;
+            --text-dark: #E0E0E0;
+            --heading-dark: #D4E0DD;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 500;
+        }
+        .hours-display {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .card-base { background-color: var(--base-dark); border-color: #5a6462; }
+        html.dark .mapboxgl-popup-content { background-color: var(--base-dark); color: var(--text-dark); }
+        html.dark .mapboxgl-popup-close-button { color: var(--text-dark); }
+        html.dark .cta-button { color: var(--bg-dark); }
+        
+        /* --- Hero Section --- */
+        .hero { 
+            height: 90vh;
+            background-image: url('https://i.pinimg.com/originals/9e/42/48/9e424835a0f0d36cb76e22f22b82bd7f.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-overlay { background: rgba(77, 100, 90, 0.5); }
+        html.dark .hero-overlay { background: rgba(47, 54, 52, 0.7); }
+
+        /* --- Layout & Interactivity --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1s ease-out, transform 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        #map { border-radius: 1rem; }
+        
+        .location-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .location-card.active {
+            border-color: var(--accent-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+
+        /* --- Buttons & Fixed Controls --- */
+        .cta-button {
+            background-color: var(--accent-gold);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(188, 160, 107, 0.2);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 1100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.3); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative flex items-center justify-center text-center text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl">Our Doors Are Open</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light tracking-wider">Find your nearest sanctuary and plan your visit.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6 text-center">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl mb-4">A Sanctuary in Time</h2>
+                <p class="text-lg leading-relaxed mb-8">To ensure a peaceful escape is always within reach, all our sanctuaries across Cambodia share the same hours of operation.</p>
+                <div class="card-base bg-white p-8 rounded-lg shadow-sm inline-block">
+                    <p class="text-xl">We are open every day</p>
+                    <p class="hours-display text-5xl md:text-7xl text-accent-gold my-2">10:00 AM - 10:00 PM</p>
+                    <p class="text-lg">Last appointments begin at 8:30 PM</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 bg-gray-50 dark:bg-black/20">
+            <div class="max-w-7xl mx-auto reveal">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl">Our Sanctuaries Across Cambodia</h2>
+                    <p class="text-lg mt-2">Click on a location to explore, or find it on the map below.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8 items-start">
+                    <div id="locations-list" class="lg:col-span-1 space-y-4">
+                        </div>
+
+                    <div class="lg:col-span-2 h-[400px] lg:h-[600px] sticky top-8">
+                        <div id='map' class="w-full h-full shadow-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Your Moment of Peace Awaits</h2>
+                <p class="text-lg leading-relaxed mb-10">This beautiful Saturday morning is the perfect time to commit to your well-being. With our locations and hours clear, the only step left is to reserve your treatment.</p>
+                <a href="book-now.html" class="cta-button inline-block text-xl font-medium py-4 px-12 rounded-lg">
+                    Book Your Appointment
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm tracking-wider">&copy; 2025 Modern->Spa. Always Open for Your Well-being. <a href="index.html" class="underline hover:text-accent-gold">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const locations = [
+                {
+                    name: 'Phnom Penh – Riverside',
+                    address: '5th Floor, Novotel Phnom Penh',
+                    phone: '+855 23 999 111',
+                    coords: [104.9315, 11.5730],
+                    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=300&h=120&q=80'
+                },
+                {
+                    name: 'Phnom Penh – BKK1',
+                    address: '#16 Street 306, Boeung Keng Kang 1',
+                    phone: '+855 23 888 222',
+                    coords: [104.9224, 11.5540],
+                    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=300&h=120&q=80'
+                },
+                {
+                    name: 'Phnom Penh – Aeon Mall 1',
+                    address: '1st Floor, Aeon Mall Phnom Penh',
+                    phone: '+855 23 777 333',
+                    coords: [104.9165, 11.5458],
+                    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=300&h=120&q=80'
+                },
+                 {
+                    name: 'Siem Reap – Pub Street',
+                    address: 'Pub Street Alley, Old Market',
+                    phone: '+855 63 963 888',
+                    coords: [103.856, 13.354],
+                     image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=300&h=120&q=80'
+                }
+            ];
+
+            // --- MAPBOX INITIALIZATION ---
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZ29vZ2xlLW1hcHMtYXBpcyIsImEiOiJjazYybm05enYwZDA3M25wYnVqNnE4dGo4In0.20-s_p051v2a2N8wODiA9g'; // Replace with a real public token
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/light-v10',
+                center: [104.92, 11.56], // Center on Phnom Penh
+                zoom: 11
+            });
+
+            // Dark mode map style
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                map.setStyle('mapbox://styles/mapbox/dark-v10');
+            }
+
+
+            // --- DOM ELEMENTS & FUNCTIONS ---
+            const locationsList = document.getElementById('locations-list');
+            const popups = []; // To manage popups
+
+            function createLocationCard(location, index) {
+                const card = document.createElement('div');
+                card.className = 'location-card card-base bg-white border p-4 rounded-lg';
+                card.id = `location-${index}`;
+                card.innerHTML = `
+                    <h3 class="text-xl font-semibold">${location.name}</h3>
+                    <p class="text-sm mt-1">${location.address}</p>
+                    <p class="text-sm mt-1 font-medium text-accent-gold">${location.phone}</p>
+                `;
+                card.addEventListener('click', () => {
+                    flyToLocation(location, index);
+                });
+                locationsList.appendChild(card);
+            }
+            
+            function addMarkersAndPopups() {
+                 locations.forEach((location, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'marker';
+                    el.style.backgroundImage = 'url(https://i.imgur.com/MK4NUzI.png)'; // A custom marker icon
+                    el.style.width = '30px';
+                    el.style.height = '40px';
+                    el.style.backgroundSize = '100%';
+
+                    const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
+                        .setHTML(`
+                            <h4 class="font-bold">${location.name}</h4>
+                            <p>${location.address}</p>
+                        `);
+                    
+                    popups.push(popup);
+                    
+                    new mapboxgl.Marker(el)
+                        .setLngLat(location.coords)
+                        .setPopup(popup)
+                        .addTo(map);
+
+                    el.addEventListener('click', () => {
+                        flyToLocation(location, index);
+                    });
+                });
+            }
+
+            function flyToLocation(location, index) {
+                map.flyTo({
+                    center: location.coords,
+                    zoom: 15
+                });
+                // Highlight active card
+                document.querySelectorAll('.location-card').forEach(c => c.classList.remove('active'));
+                document.getElementById(`location-${index}`).classList.add('active');
+
+                // Show the correct popup
+                popups.forEach((p, i) => {
+                    if (i === index) p.addTo(map);
+                    else p.remove();
+                });
+            }
+
+            // --- INITIALIZATION ---
+            locations.forEach(createLocationCard);
+            map.on('load', addMarkersAndPopups);
+
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                    if (map.isStyleLoaded()) map.setStyle('mapbox://styles/mapbox/dark-v10');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                    if (map.isStyleLoaded()) map.setStyle('mapbox://styles/mapbox/light-v10');
+                }
+            };
+            
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

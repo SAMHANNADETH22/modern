@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Awards | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Pinyon+Script&family=Taviraj:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR "THE LEGACY ROOM" EXPERIENCE --- */
+        :root {
+            --bg-light: #F5F0E9; /* Parchment */
+            --wood-panel-light: #eaddd0;
+            --text-light: #5C4033; /* Sepia Brown */
+            --heading-light: #4A2C2A; /* Mahogany */
+            --accent-brass: #8C7853;
+
+            --bg-dark: #2D2424; /* Dark Wood */
+            --wood-panel-dark: #3a2e2e;
+            --text-dark: #EAE0D5;
+            --heading-dark: #F5F0E9;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Taviraj', serif; /* A classic, readable serif */
+            transition: background-color 0.5s ease, color 0.5s ease;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiGAAAAA1BMVEX///+nxBvIAAAAIElEQVRIx2NgYGBgYjg1NdXF0dFRU1NTU1NTV1dX9/b29vY2AAD2A4e/8kGvAAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEwAACxMBAJqcGAAAABpJREFUSMftzQEBAAAAgiD/r25IQAEgAQAAAAAAAAD4GQ4wAAE2d2lFAAAAAElFTkSuQmCC');
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 700;
+        }
+        .script-font { font-family: 'Pinyon Script', cursive; }
+        .panel-bg { 
+            background-color: var(--wood-panel-light); 
+            transition: background-color 0.5s ease;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.1);
+        }
+        
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .panel-bg { background-color: var(--wood-panel-dark); }
+        html.dark .frame { background-color: #4a3b3b; border-color: #3a2e2e; }
+        html.dark .press-page { background-color: rgba(0,0,0,0.2); }
+        html.dark .cta-button { color: var(--heading-dark); }
+
+        /* --- Hero Section --- */
+        .hero { 
+            height: 90vh;
+            background-image: url('https://i.pinimg.com/originals/a9/50/66/a95066a34731a54b9d1b6a782a1e0b50.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-overlay { background: rgba(74, 44, 42, 0.6); }
+
+        /* --- Layout & Animation --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1.5s ease-out, transform 1s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        .frame {
+            background-color: #fff;
+            padding: 1.5rem;
+            border: 1px solid #dcd1c4;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1), inset 0 0 0 10px #eaddd0;
+            transition: all 0.4s ease;
+        }
+        .frame:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1), inset 0 0 0 10px #eaddd0;
+        }
+        .press-page {
+            background-color: rgba(255,255,255,0.6);
+            padding: 2rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* --- Buttons & Fixed Controls --- */
+        .cta-button {
+            background-color: var(--accent-brass);
+            color: white;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent-brass);
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--accent-brass);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative flex items-center justify-center text-center text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl">A Tradition of Acclaim</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light tracking-wider">Honoring a history of recognized excellence in the art of wellness.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6 text-center">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl">With Our Deepest Gratitude</h2>
+                <div class="w-24 h-px bg-accent-brass mx-auto my-6"></div>
+                <p class="text-xl leading-relaxed mt-4">Every award is a reflection of a shared passion. It is a testament to our dedicated team, who pour their hearts into every treatment, and to you, our cherished clients, who inspire us every day. This gallery is dedicated to you. Thank you for being part of our journey.</p>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 panel-bg">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl">Our Esteemed Accolades</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    
+                    <div class="frame reveal text-center">
+                        <img src="https://i.imgur.com/qL3aE2s.png" alt="World Luxury Spa Awards Logo" class="h-20 mx-auto mb-4 opacity-80">
+                        <h3 class="script-font text-4xl text-accent-brass">Boutique Spa of the Year</h3>
+                        <p class="mt-2 font-semibold text-lg">World Luxury Spa Awards</p>
+                        <p class="text-2xl font-light">2025</p>
+                        <p class="mt-4 text-sm">Recognized on a global stage for the unique, intimate sanctuary we have cultivated in the heart of Cambodia.</p>
+                    </div>
+
+                    <div class="frame reveal text-center">
+                         <img src="https://i.imgur.com/w1i24XJ.png" alt="AsiaSpa Awards Logo" class="h-20 mx-auto mb-4 opacity-80">
+                        <h3 class="script-font text-4xl text-accent-brass">Excellence in Tradition</h3>
+                        <p class="mt-2 font-semibold text-lg">AsiaSpa Awards</p>
+                        <p class="text-2xl font-light">2024</p>
+                        <p class="mt-4 text-sm">An honor celebrating our commitment to preserving and elevating authentic Khmer healing therapies.</p>
+                    </div>
+
+                    <div class="frame reveal text-center">
+                        <img src="https://i.imgur.com/j7f8v1H.png" alt="Condé Nast Traveller Logo" class="h-20 mx-auto mb-4 opacity-80">
+                        <h3 class="script-font text-4xl text-accent-brass">Reader's Choice Award</h3>
+                        <p class="mt-2 font-semibold text-lg">Condé Nast Traveller</p>
+                        <p class="text-2xl font-light">2023</p>
+                        <p class="mt-4 text-sm">Voted by discerning travelers as a top wellness destination in Southeast Asia for unparalleled service and atmosphere.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+             <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl">As Chronicled In The Press</h2>
+                </div>
+                <div class="reveal grid md:grid-cols-2 gap-8 md:gap-0 md:p-8 md:shadow-2xl md:bg-gray-50 dark:md:bg-slate-800">
+                    <div class="press-page md:border-r md:border-gray-300 dark:md:border-gray-600">
+                        <h3 class="text-2xl font-semibold mb-4">VOGUE</h3>
+                        <blockquote class="border-l-4 border-accent-brass pl-4 italic text-lg">
+                           "Modern->Spa is a quiet rebellion against the frantic pace of modern life. It doesn't just treat the skin; it soothes the soul with an authenticity that is achingly beautiful and profoundly rare."
+                        </blockquote>
+                        <p class="text-sm mt-4">- The Wellness Edit, 2024</p>
+                    </div>
+                    <div class="press-page">
+                        <h3 class="text-2xl font-semibold mb-4">The Phnom Penh Post</h3>
+                        <blockquote class="border-l-4 border-accent-brass pl-4 italic text-lg">
+                            "With its devotion to local ingredients and artisans, Modern->Spa is more than a place of business; it is a celebration of Cambodian heritage, elegantly redefined for a new generation."
+                        </blockquote>
+                        <p class="text-sm mt-4">- Lifestyle & Culture, 2023</p>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 text-center panel-bg">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl">An Invitation to Experience Our Legacy</h2>
+                <div class="w-24 h-px bg-accent-brass mx-auto my-6"></div>
+                <p class="text-xl leading-relaxed mb-10">Our history of acclaim is built upon a timeless commitment to excellence and genuine care. This Saturday, we invite you not just to receive a treatment, but to become a part of our continuing story.</p>
+                <a href="index.html" class="cta-button inline-block text-lg py-3 px-10 rounded-sm">
+                    RESERVE YOUR EXPERIENCE
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm tracking-wider">&copy; 2025 Modern->Spa. A Tradition of Excellence. <a href="index.html" class="underline hover:text-accent-brass">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

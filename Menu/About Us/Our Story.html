@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Story | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR "A FOUNDER'S JOURNAL" EXPERIENCE --- */
+        :root {
+            --bg-light: #FDFBF5; /* Aged Paper */
+            --base-light: #F5F0E9;
+            --text-light: #4a443d;
+            --heading-light: #333333;
+            --accent-sepia: #A99985;
+
+            --bg-dark: #222831; /* Deep Navy/Charcoal */
+            --base-dark: #2d3440;
+            --text-dark: #EAEAEA;
+            --heading-dark: #FFFFFF;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Lora', serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair+Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 600;
+        }
+        .script-font {
+            font-family: 'Caveat', cursive;
+        }
+        .section-base {
+            background-color: var(--base-light);
+            transition: background-color 0.5s ease;
+        }
+        
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .section-base { background-color: var(--base-dark); }
+        html.dark .polaroid { border-color: #4a5568; background-color: #2d3748; }
+        html.dark .cta-button { color: var(--bg-dark); }
+
+        /* --- Hero Section --- */
+        .hero { 
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/originals/f3/d3/9a/f3d39a31a90c294a613221e9c20f38bf.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-overlay { background: linear-gradient(to top, rgba(60, 47, 33, 0.7), rgba(60, 47, 33, 0.3)); }
+
+        /* --- Layout & Animation --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s ease-out, transform 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        .polaroid {
+            background: #fff;
+            border: 1px solid #EAEAEA;
+            padding: 1rem;
+            padding-bottom: 3rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transform: rotate(-3deg);
+            transition: transform 0.3s ease;
+        }
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        .polaroid figcaption {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            text-align: center;
+        }
+
+        /* --- Buttons & Fixed Controls --- */
+        .cta-button {
+            background-color: var(--accent-sepia);
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .cta-button:hover {
+            background-color: transparent;
+            border-color: var(--accent-sepia);
+            color: var(--accent-sepia);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.2); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative flex items-center justify-center text-center text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl">Our Story</h1>
+            <p class="text-3xl md:text-4xl mt-4 script-font">It all started with a memory...</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6 section-base">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-5 gap-12 items-center reveal">
+                <div class="md:col-span-2 flex justify-center">
+                    <figure class="polaroid relative">
+                        <img src="https://i.pinimg.com/564x/e7/7e/3a/e77e3ab9f2cb421c435b6a37880175b9.jpg" alt="A nostalgic image of a grandmother's hands holding herbs." class="w-full h-auto object-cover">
+                        <figcaption class="script-font text-xl text-gray-600">My yeay's healing garden.</figcaption>
+                    </figure>
+                </div>
+                <div class="md:col-span-3">
+                    <p class="text-sm uppercase tracking-widest text-accent-sepia">Chapter One</p>
+                    <h2 class="text-4xl md:text-5xl my-4">The Seed of Inspiration</h2>
+                    <div class="text-lg leading-relaxed space-y-4">
+                        <p>My childhood in Kampong Cham was filled with the scents of lemongrass, ginger, and jasmine from my grandmother's garden. She was my *yeay*, and to me, she was a magician. With her hands, she would craft herbal compresses—*chhop*—to soothe our family's every ache and ailment.</p>
+                        <p class="italic text-text-light/80">"I didn't understand the science then, only the profound feeling of care and the miraculous way her remedies worked. That feeling, that belief in nature's gentle power, never left me."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-5 gap-12 items-center reveal">
+                 <div class="md:col-span-3">
+                    <p class="text-sm uppercase tracking-widest text-accent-sepia">Chapter Two</p>
+                    <h2 class="text-4xl md:text-5xl my-4">A Journey of Discovery</h2>
+                    <div class="text-lg leading-relaxed space-y-4">
+                        <p>Years later, I found myself in Paris, studying the art and science of modern cosmetology. I was fascinated by the clinical precision, the advanced formulas, and the luxurious world of international spas. I learned the language of dermatology, of active ingredients and cellular turnover.</p>
+                        <p class="italic text-text-light/80">"Yet, amidst the gleaming chrome and cool efficiency, I felt a longing for the warmth of my yeay's kitchen. I learned the science, but I was missing the soul."</p>
+                    </div>
+                </div>
+                <div class="md:col-span-2 flex justify-center">
+                     <figure class="polaroid relative" style="transform: rotate(2deg);">
+                        <img src="https://i.pinimg.com/564x/44/2c/79/442c79a83690d5926588a5aeaa81b162.jpg" alt="A modern, chic European city street." class="w-full h-auto object-cover">
+                        <figcaption class="script-font text-xl text-gray-600">Learning a different language of beauty.</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-24 px-6 section-base">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <p class="text-sm uppercase tracking-widest text-accent-sepia">Chapter Three</p>
+                <h2 class="text-4xl md:text-5xl my-4">The Homecoming & The Vision</h2>
+                <div class="text-lg leading-relaxed space-y-4">
+                    <p>Returning to Phnom Penh was a homecoming in more ways than one. The vibrant energy of the city, the familiar scents of the markets—it all reawakened my purpose. I realised my journey was not about choosing one world over the other, but about weaving them together.</p>
+                    <p class="text-3xl script-font my-8 text-heading-light dark:text-heading-dark">"My vision was clear: to blend the soulful wisdom of my yeay with the proven knowledge of the world."</p>
+                    <p>This was the birth of Modern->Spa. A place that honors Cambodian heritage while embracing the best of modern wellness. A sanctuary that is both deeply rooted and elegantly contemporary.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center reveal">
+                <div>
+                     <img src="https://i.pinimg.com/564x/a3/14/3c/a3143c4d9b43e5e412a87a64e1c4e724.jpg" alt="A warm, welcoming portrait of the spa founder in her sanctuary." class="rounded-lg shadow-xl w-full h-auto object-cover">
+                </div>
+                <div>
+                    <p class="text-sm uppercase tracking-widest text-accent-sepia">Our Story, Today</p>
+                    <h2 class="text-4xl md:text-5xl my-4">An Invitation to You</h2>
+                    <div class="text-lg leading-relaxed space-y-4">
+                        <p>Modern->Spa is more than a business to me. It is the embodiment of my story, a tribute to my grandmother, and a love letter to the healing traditions of Cambodia.</p>
+                        <p>It is my promise to provide a space where you can find your own harmony, nurtured by treatments that are pure, intentional, and deeply effective. We are so honored to share this sanctuary with you.</p>
+                        <p class="text-4xl script-font text-right mt-8 text-heading-light dark:text-heading-dark">Serey</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="booking" class="py-24 px-6 text-center section-base">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Be a Part of Our Story</h2>
+                <p class="text-lg leading-relaxed mb-10">This beautiful Saturday morning in Phnom Penh is a perfect time for new beginnings. We invite you to step into our sanctuary and create your own chapter of peace and well-being. </p>
+                <a href="index.html" class="cta-button inline-block text-xl font-medium py-4 px-10 rounded-full">
+                    Begin Your Journey
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-accent-sepia">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

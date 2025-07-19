@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spa Packages | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR "THE CURATOR'S COLLECTION" EXPERIENCE --- */
+        :root {
+            --bg-light: #FCFAF8; /* Warm White */
+            --text-light: #5a5a5a;
+            --heading-light: #1E4B40; /* Deep Emerald/Jade */
+            --accent-gold: #C9B38D;
+            --accent-gold-darker: #b59f77;
+
+            --bg-dark: #252D2B; /* Charcoal Slate */
+            --text-dark: #E0E0E0;
+            --heading-dark: #A4D4C8; /* Luminous Jade */
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 500;
+        }
+
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .package-card { background-color: #2E3936; border-color: rgba(164, 212, 200, 0.2); }
+        html.dark .detail-card { background-color: rgba(0,0,0,0.1); }
+        html.dark .cta-button { color: var(--bg-dark); }
+
+        /* --- Hero Section & Video --- */
+        .hero { height: 100vh; }
+        .hero video { object-fit: cover; }
+        .hero-overlay { background: linear-gradient(to top, rgba(30, 75, 64, 0.6), transparent); }
+        html.dark .hero-overlay { background: linear-gradient(to top, rgba(37, 45, 43, 0.7), transparent); }
+
+        /* --- Horizontal Scrolling Section --- */
+        .horizontal-scroller {
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-gold) transparent;
+        }
+        .horizontal-scroller::-webkit-scrollbar { height: 6px; }
+        .horizontal-scroller::-webkit-scrollbar-track { background: transparent; }
+        .horizontal-scroller::-webkit-scrollbar-thumb { background-color: var(--accent-gold); border-radius: 10px; }
+        .package-card {
+            scroll-snap-align: center;
+            flex: 0 0 clamp(80%, 400px, 90%);
+            transition: all 0.4s ease;
+        }
+
+        /* --- Animations & Interactivity --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s ease-out, transform 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .package-card .reveal-child { opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+        .package-card:hover .reveal-child { opacity: 1; transform: translateY(0); }
+        /* Staggered animation for list items */
+        .package-card:hover .reveal-child:nth-child(1) { transition-delay: 0.1s; }
+        .package-card:hover .reveal-child:nth-child(2) { transition-delay: 0.2s; }
+        .package-card:hover .reveal-child:nth-child(3) { transition-delay: 0.3s; }
+        .package-card:hover .reveal-child:nth-child(4) { transition-delay: 0.4s; }
+
+        /* --- Buttons & Fixed Controls --- */
+        .cta-button {
+            background-color: var(--accent-gold);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: var(--accent-gold-darker);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(201, 179, 141, 0.2);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.2); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative overflow-hidden flex items-center justify-center text-center text-white">
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full">
+             <source src="https://videos.pexels.com/video-files/7653372/7653372-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl">The Curator's Collection</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light max-w-2xl mx-auto">Half-day and full-day journeys, meticulously designed for your ultimate well-being.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6">
+            <div class="max-w-3xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">A Note From Our Curator</h2>
+                <div class="text-lg leading-relaxed space-y-4">
+                    <p>Welcome. I have personally designed each of our spa journeys to be more than a series of treatments; they are complete narratives for renewal. Drawing from my travels and our cherished Cambodian traditions, these collections are my invitation to you to truly disconnect, immerse your senses, and rediscover your inner harmony.</p>
+                    <p class="font-serif italic text-2xl text-accent-gold mt-4">- Serey</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-gray-50 dark:bg-black/20">
+            <div class="max-w-7xl mx-auto px-6 reveal">
+                 <h2 class="text-4xl md:text-5xl mb-12 text-center">Discover Your Journey</h2>
+            </div>
+            <div class="horizontal-scroller flex gap-8 py-4 px-6 md:px-12 overflow-x-auto">
+                
+                <article class="package-card reveal bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-lg shadow-lg overflow-hidden p-8 flex flex-col">
+                    <h3 class="text-3xl lg:text-4xl">The Serenity Journey</h3>
+                    <p class="font-light mt-2 mb-6">For profound relaxation and a quiet mind.</p>
+                    <div class="border-t border-dashed dark:border-gray-700 my-4"></div>
+                    <ul class="space-y-3 text-lg mb-8 flex-grow">
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Herbal Steam Infusion</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Aromatic Oil Massage</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Hydro-Infusion Facial</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Ginger Tea & Refreshments</li>
+                    </ul>
+                    <div class="mt-auto text-center">
+                        <p class="text-3xl font-serif mb-6">$120 <span class="text-base font-sans font-light">(Approx. 3 hours)</span></p>
+                        <a href="#booking" class="cta-button w-full font-medium py-3 px-6 rounded-full text-lg">Book This Journey</a>
+                    </div>
+                </article>
+
+                <article class="package-card reveal bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-lg shadow-lg overflow-hidden p-8 flex flex-col">
+                    <h3 class="text-3xl lg:text-4xl">The Radiance Ritual</h3>
+                    <p class="font-light mt-2 mb-6">To unveil your most luminous self.</p>
+                    <div class="border-t border-dashed dark:border-gray-700 my-4"></div>
+                    <ul class="space-y-3 text-lg mb-8 flex-grow">
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Lumina Salt Polish</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Aromatherapy Massage</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Luminescence Facial</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Tropical Fruit Platter</li>
+                    </ul>
+                     <div class="mt-auto text-center">
+                        <p class="text-3xl font-serif mb-6">$150 <span class="text-base font-sans font-light">(Approx. 3.5 hours)</span></p>
+                        <a href="#booking" class="cta-button w-full font-medium py-3 px-6 rounded-full text-lg">Book This Journey</a>
+                    </div>
+                </article>
+
+                 <article class="package-card reveal bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-lg shadow-lg overflow-hidden p-8 flex flex-col">
+                    <h3 class="text-3xl lg:text-4xl">Khmer Healer's Escape</h3>
+                    <p class="font-light mt-2 mb-6">A traditional journey of detoxification.</p>
+                    <div class="border-t border-dashed dark:border-gray-700 my-4"></div>
+                    <ul class="space-y-3 text-lg mb-8 flex-grow">
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Herbal Steam Infusion</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Royal Compress Massage</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Terra Detox Body Wrap</li>
+                        <li class="reveal-child flex items-center gap-3"><svg class="w-5 h-5 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>Lemongrass Tea & Bites</li>
+                    </ul>
+                     <div class="mt-auto text-center">
+                        <p class="text-3xl font-serif mb-6">$165 <span class="text-base font-sans font-light">(Approx. 4 hours)</span></p>
+                        <a href="#booking" class="cta-button w-full font-medium py-3 px-6 rounded-full text-lg">Book This Journey</a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-6xl mx-auto reveal text-center">
+                <h2 class="text-4xl md:text-5xl mb-12">An Unforgettable Experience</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="detail-card bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                        <h4 class="text-xl font-medium mb-2">Private Suites</h4>
+                        <p>Each journey unfolds in the comfort of your own private treatment suite.</p>
+                    </div>
+                    <div class="detail-card bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                        <h4 class="text-xl font-medium mb-2">Organic Refreshments</h4>
+                        <p>Enjoy our handcrafted herbal teas and light, healthy snacks during your stay.</p>
+                    </div>
+                    <div class="detail-card bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                        <h4 class="text-xl font-medium mb-2">Personal Consultation</h4>
+                        <p>Your journey begins with a consultation to tailor every detail perfectly to you.</p>
+                    </div>
+                    <div class="detail-card bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                        <h4 class="text-xl font-medium mb-2">Time for Tranquility</h4>
+                        <p>We include ample time for you to relax and transition between treatments.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 bg-gray-50 dark:bg-black/20">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Your Escape Awaits</h2>
+                <p class="text-lg leading-relaxed mb-10">This Saturday morning is the perfect time to plan your escape from the city's bustle. Choose your journey, reserve your time, and allow us to take care of the rest. A day of pure bliss is just a click away.</p>
+                <a href="mailto:spa@modernserenity.com?subject=Spa Package Booking" class="cta-button inline-block text-xl font-medium py-4 px-10 rounded-full">
+                    Reserve Your Journey
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-accent-gold">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

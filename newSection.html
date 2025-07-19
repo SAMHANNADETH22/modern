@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern->Spa | A Wellness Sanctuary</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --sage-green: #8A9A5B;
+            --lavender: #E6E6FA;
+            --cream: #F5F5DC;
+            --soft-earth: #D2B48C;
+            --dark-text: #3C2F21;
+            --light-text: #FBF7F0;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark-text);
+            /* Subtle linen texture */
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><path fill="%23D2B48C" fill-opacity="0.05" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"></path></svg>');
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Hero Section --- */
+        .hero-video-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- Side Cart Panel --- */
+        #side-cart {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Initially hidden */
+            width: 90%;
+            max-width: 400px;
+            height: 100%;
+            background-color: var(--light-text);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+            transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        #side-cart.open {
+            right: 0;
+        }
+
+        /* --- Collapsible Tabs --- */
+        .tab-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        /* --- Testimonials Carousel --- */
+        .testimonial-carousel {
+            overflow: hidden;
+            position: relative;
+        }
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .testimonial-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* --- Our Ethics Icons --- */
+        .ethic-icon-wrapper {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .ethic-icon-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* --- Mobile Sticky CTA --- */
+        #mobile-cta {
+            transition: bottom 0.3s ease-in-out;
+        }
+        
+        /* --- Chatbot --- */
+        #chat-bubble {
+            transition: transform 0.3s ease;
+        }
+        #chat-bubble:hover {
+            transform: scale(1.1);
+        }
+        #chat-window {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .chat-message {
+            max-width: 80%;
+        }
+        .chat-option {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .chat-option:hover {
+            background-color: var(--lavender);
+        }
+    </style>
+</head>
+<body class="bg-cream">
+
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-sm shadow-sm px-4 md:px-6 py-2 fixed top-0 left-0 w-full z-50">
+        <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <h1 class="text-2xl font-bold text-dark-text">Modern->Spa</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#experience" class="text-gray-700 font-medium hover:text-sage-green transition-colors">Experiences</a>
+                <a href="#promise" class="text-gray-700 font-medium hover:text-sage-green transition-colors">Our Promise</a>
+                <a href="#products" class="text-gray-700 font-medium hover:text-sage-green transition-colors">Products</a>
+                <a href="#locations" class="text-gray-700 font-medium hover:text-sage-green transition-colors">Find Us</a>
+            </div>
+            <a href="#booking" class="hidden md:block bg-sage-green text-white font-bold py-2 px-6 rounded-full hover:bg-opacity-90 transition-all transform hover:scale-105">Book Now</a>
+        </div>
+    </nav>
+
+    <main class="pt-16">
+        <!-- 1. Hero Section -->
+        <header class="relative text-white h-[calc(100vh-64px)] flex items-center justify-center overflow-hidden">
+            <div class="hero-video-wrapper">
+                <video autoplay loop muted playsinline class="hero-video">
+                    <!-- Calming video of flowing water -->
+                    <source src="https://videos.pexels.com/video-files/3254005/3254005-hd_1920_1080_25fps.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content text-center px-4">
+                <h1 class="text-5xl md:text-7xl font-bold text-white">Your Sanctuary Awaits</h1>
+                <p class="text-xl md:text-2xl mt-4 text-white/90 max-w-2xl mx-auto">Rediscover balance and tranquility with treatments inspired by nature's wisdom.</p>
+                <div id="booking" class="mt-8">
+                    <a href="#quiz" class="bg-white text-dark-text font-bold py-4 px-10 rounded-full text-lg hover:bg-lavender transition-all transform hover:scale-105 shadow-lg">Book a Treatment in 2 Minutes</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. Featured Experience Section -->
+        <section id="experience" class="py-20 px-4 bg-white">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="rounded-lg overflow-hidden shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80" alt="Herbal therapy ingredients" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h2 class="text-4xl font-bold mb-4">Personalized Herbal Therapy</h2>
+                    <p class="text-lg text-gray-600 mb-6">Our journey begins with you. We listen to your needs to create a bespoke blend of traditional herbs and aromatic oils, ensuring a treatment that's uniquely yours. Experience the profound healing of Cambodian botanicals, tailored to restore your mind and body.</p>
+                    <a href="#quiz" class="text-sage-green font-bold text-lg hover:underline">Discover Your Perfect Treatment &rarr;</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 3. Our Promise Section -->
+        <section id="promise" class="py-20 px-4">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-12">Our Promise to You & The Planet</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-sage-green/20 rounded-full mx-auto flex items-center justify-center mb-4">
+                            <svg class="w-12 h-12 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2">100% Natural</h3>
+                        <p>We use only pure, plant-derived ingredients, free from synthetic fragrances and harsh chemicals.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-sage-green/20 rounded-full mx-auto flex items-center justify-center mb-4">
+                             <svg class="w-12 h-12 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2">Sustainable</h3>
+                        <p>Our ingredients are responsibly sourced, supporting local communities and preserving biodiversity.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-sage-green/20 rounded-full mx-auto flex items-center justify-center mb-4">
+                           <svg class="w-12 h-12 text-sage-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2">Ethical</h3>
+                        <p>We are proudly cruelty-free. Our passion for wellness extends to all living beings.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Testimonials Carousel -->
+        <section class="py-20 px-4 bg-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-4">Words of Wellness</h2>
+                <p class="text-lg text-gray-600 mb-12">See what our guests are saying about their experience.</p>
+                <div class="testimonial-carousel bg-cream p-8 rounded-lg shadow-inner relative">
+                    <div class="testimonial-track">
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide px-4">
+                            <p class="text-xl italic mb-4">"An absolute oasis in the city. The personalized herbal massage was unlike anything I've ever experienced. I left feeling completely renewed."</p>
+                            <p class="font-bold text-sage-green">- Jessica L.</p>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="testimonial-slide px-4">
+                            <p class="text-xl italic mb-4">"The attention to detail is incredible. From the calming music to the fragrant oils, every moment is pure bliss. The Tropical Spa Set is now a staple in my home!"</p>
+                            <p class="font-bold text-sage-green">- David C.</p>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="testimonial-slide px-4">
+                            <p class="text-xl italic mb-4">"I took the treatment quiz and the recommendation was spot on! It's so nice to have a spa that truly listens. Highly recommended."</p>
+                            <p class="font-bold text-sage-green">- Sarah M.</p>
+                        </div>
+                    </div>
+                    <button id="prev-testimonial" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/50 rounded-full p-2 hover:bg-white transition">&lt;</button>
+                    <button id="next-testimonial" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/50 rounded-full p-2 hover:bg-white transition">&gt;</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Product Feature Section -->
+        <section id="products" class="py-20 px-4">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h4 class="text-lg font-bold text-sage-green">Bring the Sanctuary Home</h4>
+                    <h2 class="text-4xl font-bold mb-4">Tropical Herbal Spa Set</h2>
+                    <p class="text-lg text-gray-600 mb-6">Indulge in the natural richness of tropical botanicals. Handcrafted in Phnom Penh using lemongrass, kaffir lime, and coconut oil.</p>
+                    
+                    <!-- Collapsible Tabs -->
+                    <div class="space-y-2">
+                        <div>
+                            <button class="tab-toggle w-full text-left font-bold text-lg p-4 bg-white rounded-t-lg flex justify-between items-center">Ingredients & Benefits <span>+</span></button>
+                            <div class="tab-content bg-white p-4 rounded-b-lg">
+                                <p><strong>Lemongrass:</strong> Purifies and tones the skin.<br><strong>Kaffir Lime:</strong> Uplifts the mood and clarifies.<br><strong>Coconut Oil:</strong> Deeply hydrates and nourishes.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="tab-toggle w-full text-left font-bold text-lg p-4 bg-white rounded-t-lg flex justify-between items-center">Usage Instructions <span>+</span></button>
+                            <div class="tab-content bg-white p-4 rounded-b-lg">
+                                <p>Begin with the scrub on damp skin. Rinse, then apply the nourishing lotion. Finish with a few drops of essential oil on pulse points.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="add-to-cart-btn mt-8 bg-sage-green text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all">Add to Cart - $49</button>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://i.pinimg.com/736x/62/bc/ed/62bced9fac6f35eb1c3902f5c096eee3.jpg" alt="Tropical Herbal Spa Set" class="rounded-lg shadow-lg w-full h-full object-cover">
+                    <div class="relative rounded-lg shadow-lg bg-gray-300 flex items-center justify-center cursor-pointer group">
+                        <img src="https://images.unsplash.com/photo-1599305269585-202d6ae3f8e4?auto=format&fit=crop&w=600&q=80" class="rounded-lg w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="text-white font-bold">Watch: Behind the Craft</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Treatment Explorer -->
+        <section id="quiz" class="py-20 px-4 bg-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-4">Find Your Perfect Escape</h2>
+                <p class="text-lg text-gray-600 mb-8">Answer a few simple questions and we’ll recommend a personalized spa package just for you.</p>
+                <div class="bg-cream p-8 rounded-lg shadow-inner text-left">
+                    <div class="mb-6">
+                        <label class="font-bold block mb-2">How are you feeling today?</label>
+                        <select class="w-full p-3 rounded-md border border-gray-300">
+                            <option>Stressed & Overwhelmed</option>
+                            <option>Tired & Fatigued</option>
+                            <option>Achy & Tense</option>
+                            <option>Seeking Relaxation</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="font-bold block mb-2">What is your primary goal?</label>
+                        <select class="w-full p-3 rounded-md border border-gray-300">
+                            <option>Mental Clarity</option>
+                            <option>Physical Recovery</option>
+                            <option>Skin Rejuvenation</option>
+                            <option>Pure Indulgence</option>
+                        </select>
+                    </div>
+                    <button class="w-full bg-sage-green text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all">Get My Recommendation</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 7. Locations & Ethics -->
+        <section id="locations" class="py-20 px-4">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                     <h2 class="text-4xl font-bold mb-4">Visit Our Sanctuaries</h2>
+                    <p class="text-lg text-gray-600 mb-6">Find your nearest Modern->Spa location and step into a world of tranquility. Each branch offers our full menu of signature treatments and products.</p>
+                    <div class="mt-8 space-y-4">
+                        <div class="ethic-icon-wrapper p-4 bg-white rounded-lg flex items-center gap-4">
+                            <img src="https://placehold.co/40x40/8A9A5B/FFFFFF?text=V" alt="Vegan Icon" class="rounded-full">
+                            <div><h4 class="font-bold">EcoCert Certified</h4><p>Committed to the highest standards of organic and natural cosmetics.</p></div>
+                        </div>
+                         <div class="ethic-icon-wrapper p-4 bg-white rounded-lg flex items-center gap-4">
+                            <img src="https://placehold.co/40x40/8A9A5B/FFFFFF?text=L" alt="Local Icon" class="rounded-full">
+                            <div><h4 class="font-bold">Locally Sourced</h4><p>Supporting Cambodian farmers and artisans with every treatment.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-lg overflow-hidden shadow-xl h-96">
+                    <!-- Placeholder for Google Maps API -->
+                    <img src="https://placehold.co/800x600/E6E6FA/3C2F21?text=Interactive+Map+Goes+Here" alt="Map of spa locations" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-text text-light-text text-center py-10">
+        <p>&copy; 2025 Modern->Spa. All rights reserved.</p>
+    </footer>
+
+    <!-- Side Cart Panel -->
+    <div id="side-cart">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-xl font-bold">Your Cart</h3>
+            <button id="close-cart" class="font-bold text-2xl">&times;</button>
+        </div>
+        <div id="cart-items" class="flex-grow p-4 overflow-y-auto">
+            <!-- Cart items will be injected here by JS -->
+            <p class="text-gray-500 text-center">Your cart is empty.</p>
+        </div>
+        <div class="p-4 border-t">
+            <div class="flex justify-between font-bold mb-4">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <p class="text-sm text-gray-500 mb-2">Psst... add our <a href="#" class="underline">Herbal Oil</a> for $5 off!</p>
+            <button class="w-full bg-sage-green text-white font-bold py-3 rounded-full hover:bg-opacity-90">Checkout</button>
+        </div>
+    </div>
+    
+    <!-- Mobile Sticky CTA -->
+    <div id="mobile-cta" class="md:hidden fixed bottom-[-100px] left-0 w-full p-2 bg-white/80 backdrop-blur-sm shadow-t-lg z-40">
+        <a href="#booking" class="block w-full bg-sage-green text-white font-bold py-3 rounded-full text-center">Book Now</a>
+    </div>
+
+    <!-- AI Wellness Chatbot -->
+    <div id="chat-bubble" class="fixed bottom-4 right-4 bg-sage-green text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl cursor-pointer z-50">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+    </div>
+    <div id="chat-window" class="fixed bottom-24 right-4 w-80 h-96 bg-white rounded-lg shadow-xl z-50 flex-col opacity-0 -translate-y-4 pointer-events-none">
+        <div class="p-3 bg-sage-green text-white rounded-t-lg">
+            <h4 class="font-bold">AI Wellness Assistant</h4>
+        </div>
+        <div id="chat-log" class="flex-grow p-3 space-y-3 overflow-y-auto">
+             <!-- Chat messages appear here -->
+        </div>
+        <div id="chat-options" class="p-3 border-t">
+             <!-- Chat options appear here -->
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Side Cart Logic ---
+        const sideCart = document.getElementById('side-cart');
+        const closeCartBtn = document.getElementById('close-cart');
+        const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartSubtotalEl = document.getElementById('cart-subtotal');
+        let subtotal = 0;
+
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // In a real app, you'd get product data dynamically
+                const item = { name: 'Tropical Herbal Spa Set', price: 49.00, image: 'https://i.pinimg.com/736x/62/bc/ed/62bced9fac6f35eb1c3902f5c096eee3.jpg' };
+                
+                if (cartItemsContainer.querySelector('.text-gray-500')) {
+                    cartItemsContainer.innerHTML = ''; // Clear "empty" message
+                }
+
+                cartItemsContainer.innerHTML += `
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-md object-cover">
+                        <div class="flex-grow">
+                            <p class="font-bold">${item.name}</p>
+                            <p class="text-sm text-gray-600">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <button class="text-red-500 font-bold">&times;</button>
+                    </div>
+                `;
+                subtotal += item.price;
+                cartSubtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+                sideCart.classList.add('open');
+            });
+        });
+
+        closeCartBtn.addEventListener('click', () => sideCart.classList.remove('open'));
+
+        // --- Collapsible Tabs Logic ---
+        const tabToggles = document.querySelectorAll('.tab-toggle');
+        tabToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const span = toggle.querySelector('span');
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    span.textContent = '+';
+                } else {
+                    // Close other tabs first
+                    tabToggles.forEach(t => {
+                        t.nextElementSibling.style.maxHeight = null;
+                        t.querySelector('span').textContent = '+';
+                    });
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    span.textContent = '-';
+                }
+            });
+        });
+
+        // --- Testimonial Carousel Logic ---
+        const track = document.querySelector('.testimonial-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.getElementById('next-testimonial');
+        const prevButton = document.getElementById('prev-testimonial');
+        let currentIndex = 0;
+
+        const updateSlidePosition = () => {
+            track.style.transform = 'translateX(-' + 100 * currentIndex + '%)';
+        };
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlidePosition();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlidePosition();
+        });
+        
+        // --- Mobile Sticky CTA Logic ---
+        const mobileCta = document.getElementById('mobile-cta');
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300 && window.scrollY > lastScrollY) {
+                mobileCta.style.bottom = '0px';
+            } else {
+                mobileCta.style.bottom = '-100px';
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // --- AI Chatbot Logic ---
+        const chatBubble = document.getElementById('chat-bubble');
+        const chatWindow = document.getElementById('chat-window');
+        const chatLog = document.getElementById('chat-log');
+        const chatOptions = document.getElementById('chat-options');
+
+        const chatFlow = {
+            start: {
+                message: "Hello! I'm your AI Wellness Assistant. What do you need today?",
+                options: {
+                    "Suggest a treatment": "suggest",
+                    "Find a product": "product",
+                    "Book an appointment": "book"
+                }
+            },
+            suggest: {
+                message: "Of course! To help me, are you feeling more stressed or fatigued?",
+                options: { "Stressed": "suggest_stressed", "Fatigued": "suggest_fatigued" }
+            },
+            suggest_stressed: {
+                message: "I recommend our Aromatic Oil Relaxation massage to calm the mind. It's truly blissful.",
+                options: { "Book this": "book", "Start over": "start" }
+            },
+            suggest_fatigued: {
+                message: "Our Herbal Compress Massage is perfect for reviving tired muscles and boosting energy.",
+                options: { "Book this": "book", "Start over": "start" }
+            },
+            product: {
+                message: "Our most popular product is the Tropical Herbal Spa Set. It's like a spa day in a box!",
+                options: { "View Product": "link_product", "Start over": "start" }
+            },
+            book: {
+                message: "Great! Let's get you booked. Please visit our booking page to find a time that works for you.",
+                options: { "Go to Booking": "link_booking", "Start over": "start" }
+            }
+        };
+
+        const showChatStep = (stepKey) => {
+            const step = chatFlow[stepKey];
+            
+            // Add bot message to log
+            const botMessage = document.createElement('div');
+            botMessage.className = 'chat-message self-start bg-gray-200 rounded-lg p-2';
+            botMessage.textContent = step.message;
+            chatLog.appendChild(botMessage);
+            chatLog.scrollTop = chatLog.scrollHeight;
+
+            // Clear and show new options
+            chatOptions.innerHTML = '';
+            for (const [text, nextStepKey] of Object.entries(step.options)) {
+                const optionBtn = document.createElement('div');
+                optionBtn.className = 'chat-option border rounded-lg p-2 text-center text-sm font-semibold';
+                optionBtn.textContent = text;
+                optionBtn.dataset.next = nextStepKey;
+                chatOptions.appendChild(optionBtn);
+            }
+        };
+
+        chatBubble.addEventListener('click', () => {
+            chatWindow.style.display = 'flex';
+            setTimeout(() => {
+                chatWindow.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+            }, 10);
+        });
+
+        chatOptions.addEventListener('click', (e) => {
+            if (e.target.matches('.chat-option')) {
+                const nextStep = e.target.dataset.next;
+                
+                // Add user choice to log
+                const userMessage = document.createElement('div');
+                userMessage.className = 'chat-message self-end bg-sage-green text-white rounded-lg p-2';
+                userMessage.textContent = e.target.textContent;
+                chatLog.appendChild(userMessage);
+
+                if (nextStep.startsWith('link_')) {
+                    const sectionId = nextStep.split('_')[1];
+                    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    showChatStep(nextStep);
+                }
+            }
+        });
+
+        // Close chat window if clicked outside
+        document.addEventListener('click', (e) => {
+            if (!chatWindow.contains(e.target) && !chatBubble.contains(e.target)) {
+                 chatWindow.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+            }
+        });
+
+        // Initial chat message
+        showChatStep('start');
+    });
+    </script>
+</body>
+</html>

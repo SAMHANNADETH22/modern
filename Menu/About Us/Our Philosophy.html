@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Philosophy | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR "THE WEAVER'S LOOM" EXPERIENCE --- */
+        :root {
+            --bg-light: #F4F1ED; /* Raw Silk */
+            --base-light: #EAE3D9; /* Natural Linen */
+            --text-light: #5C544E;
+            --heading-light: #3C2F21; /* Rich Earth */
+            --accent-gold: #BCA06B;
+
+            --bg-dark: #2A231F; /* Deep Teak */
+            --base-dark: #3C332D;
+            --text-dark: #D4CFC7;
+            --heading-dark: #EAE3D9;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Lora', serif; /* A more narrative, traditional font */
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 600;
+        }
+        .section-base {
+            background-color: var(--base-light);
+            transition: background-color 0.5s ease;
+        }
+        .pull-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* --- Dark Mode --- */
+        html.dark body { background-color: var(--bg-dark); color: var(--text-dark); }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--heading-dark); }
+        html.dark .section-base { background-color: var(--base-dark); }
+        html.dark .promise-card { background-color: rgba(0,0,0,0.1); border-color: rgba(255,255,255,0.1); }
+
+        /* --- Hero Section & Woven Texture --- */
+        .hero { 
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/originals/1a/05/b0/1a05b0c749e1e41e57a390a3693e5066.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-overlay { background: rgba(42, 35, 31, 0.5); }
+        .textured-bg {
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.04"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+        }
+
+        /* --- Animations & Interactivity --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s ease-out, transform 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        /* --- Buttons & Fixed Controls --- */
+        .cta-button {
+            background-color: var(--accent-gold);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px -5px rgba(188, 160, 107, 0.5);
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(188, 160, 107, 0.6);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.2); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative flex items-center justify-center text-center text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 reveal visible">
+            <h1 class="text-6xl md:text-8xl">The Weaver's Loom</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light">More than a treatment, it is a belief.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">We Believe in a Gentle Harmony.</h2>
+                <div class="text-xl leading-relaxed space-y-6">
+                    <p>At Modern->Spa, true wellness is a gentle harmony between body and spirit, tradition and innovation, nature and self. Our spa is a sanctuary built on this belief—a place where the wisdom of the past nurtures the needs of the present.</p>
+                    <p class="pull-quote text-2xl md:text-3xl text-heading-light/70 dark:text-heading-dark/70">"Every treatment is a thread in a larger tapestry of well-being, woven with intention and care."</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 section-base textured-bg">
+            <div class="max-w-7xl mx-auto space-y-24">
+                
+                <article class="reveal grid md:grid-cols-2 gap-12 items-center">
+                    <div class="md:order-2">
+                        <img src="https://i.pinimg.com/564x/44/7f/73/447f739a8a70519a415a77dce7e7d692.jpg" alt="Ancient Khmer temple carvings depicting Apsara dancers." class="rounded-lg shadow-xl w-full h-auto object-cover">
+                    </div>
+                    <div class="md:order-1">
+                        <h3 class="text-4xl mb-4">The Thread of Tradition</h3>
+                        <h4 class="text-2xl font-light mb-6">Honoring Our Roots</h4>
+                        <p class="leading-relaxed">Our story is deeply rooted in the rich soil of Cambodian culture. We hold immense respect for the healing arts of the *Kru Khmer* (traditional healers) and the ancient knowledge of local botanicals passed down through generations. This timeless wisdom is the foundational thread of our practice, ensuring every treatment is authentic and soulful.</p>
+                    </div>
+                </article>
+
+                <article class="reveal grid md:grid-cols-2 gap-12 items-center">
+                     <div>
+                        <img src="https://i.pinimg.com/564x/72/5a/a8/725aa85721111d4e104b2b1156a63584.jpg" alt="Natural spa ingredients like moringa leaves, jasmine flowers, and turmeric in bowls." class="rounded-lg shadow-xl w-full h-auto object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-4xl mb-4">The Thread of Purity</h3>
+                        <h4 class="text-2xl font-light mb-6">The Essence of Nature</h4>
+                        <p class="leading-relaxed">We believe nature provides the most powerful and compassionate remedies. Our second thread is a commitment to absolute purity. We exclusively use ingredients that are 100% natural, ethically sourced from local Cambodian communities, and free from any synthetic chemicals. From Kampot salt to wild-harvested honey, we bring you the unspoiled essence of the earth.</p>
+                    </div>
+                </article>
+
+                 <article class="reveal grid md:grid-cols-2 gap-12 items-center">
+                    <div class="md:order-2">
+                        <img src="https://i.pinimg.com/564x/82/22/0c/82220c3a2f8c5c7d2c3e1e695d7dd76f.jpg" alt="A clean, modern image showing a clear serum in a glass dropper." class="rounded-lg shadow-xl w-full h-auto object-cover">
+                    </div>
+                    <div class="md:order-1">
+                        <h3 class="text-4xl mb-4">The Thread of Innovation</h3>
+                        <h4 class="text-2xl font-light mb-6">Refined by Modern Science</h4>
+                        <p class="leading-relaxed">Respect for tradition does not mean ignoring progress. The third thread intertwines ancient wisdom with a modern, scientific understanding of dermatology and human anatomy. This fusion allows us to elevate traditional remedies, ensuring they are not only safe but also exceptionally effective, delivering tangible results for your skin and body.</p>
+                    </div>
+                </article>
+
+                <article class="reveal grid md:grid-cols-2 gap-12 items-center">
+                     <div>
+                        <img src="https://i.pinimg.com/564x/12/f9/9f/12f99f2d1e8f395b210438c35a843588.jpg" alt="A serene corner of the spa with a lit candle, soft towels, and tranquil lighting." class="rounded-lg shadow-xl w-full h-auto object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-4xl mb-4">The Thread of Serenity</h3>
+                        <h4 class="text-2xl font-light mb-6">A Sanctuary for the Spirit</h4>
+                        <p class="leading-relaxed">Our final thread is the space itself. We believe healing requires more than just skilled hands; it requires a haven of peace. Our philosophy extends to every detail of our environment—the gentle music, the calming aromas, the soft light. We have crafted a sanctuary where you can truly disconnect from the world and reconnect with yourself.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="py-24 px-6">
+            <div class="max-w-6xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-16">Our Woven Promise to You</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="promise-card text-center p-8 border rounded-lg">
+                        <h4 class="text-2xl mb-3">Authenticity</h4>
+                        <p>To always honor the Cambodian traditions that inspire us in every aspect of our service.</p>
+                    </div>
+                    <div class="promise-card text-center p-8 border rounded-lg">
+                        <h4 class="text-2xl mb-3">Purity</h4>
+                        <p>To use only the finest, 100% natural ingredients for the health of your skin and body.</p>
+                    </div>
+                    <div class="promise-card text-center p-8 border rounded-lg">
+                        <h4 class="text-2xl mb-3">Expertise</h4>
+                        <p>To provide treatments administered by skilled, compassionate, and highly-trained therapists.</p>
+                    </div>
+                    <div class="promise-card text-center p-8 border rounded-lg">
+                        <h4 class="text-2xl mb-3">Tranquility</h4>
+                        <p>To offer a true sanctuary where you can disconnect, heal, and find your center.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 text-center section-base textured-bg">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Experience Our Belief</h2>
+                <p class="text-lg leading-relaxed mb-10">Our philosophy is not just written on a page; it is felt in every touch, in every scent, in the peaceful moments we create. We invite you to experience it for yourself. Your journey to harmony can begin this Saturday morning in Phnom Penh.</p>
+                <a href="index.html" class="cta-button inline-block text-xl font-medium py-4 px-10 rounded-full">
+                    Explore Our Treatments
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-accent-gold">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>

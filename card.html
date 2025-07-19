@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Modern->Spa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link href="./index1.html" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #fbfaf8;
+        }
+        h1, h2, h3, button {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <nav class="bg-white shadow-sm px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./index1.html" class="text-xl font-bold">Modern->Spa</a>
+            <a href="./index.html" class="text-sm font-medium text-gray-700 hover:text-black transition">Continue Shopping</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto mt-12 mb-20 px-4">
+        <h1 class="text-4xl font-semibold text-center mb-10">Your Cart</h1>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+
+            <!-- Cart Items -->
+            <div class="flex-grow">
+                <div class="bg-white rounded-lg shadow-md p-6 flex items-center gap-6">
+                    <!-- Product Image -->
+                    <img src="https://i.pinimg.com/736x/62/bc/ed/62bced9fac6f35eb1c3902f5c096eee3.jpg" alt="Tropical Herbal Spa Set" class="w-24 h-24 object-cover rounded-md">
+                    
+                    <!-- Product Details -->
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-semibold">Tropical Herbal Spa Set</h2>
+                        <p class="text-sm text-gray-600">Includes scrub, lotion, and essential oil.</p>
+                        <button class="text-red-500 hover:text-red-700 text-sm font-semibold mt-2">Remove</button>
+                    </div>
+
+                    <!-- Quantity and Price -->
+                    <div class="text-right">
+                        <p class="text-lg font-semibold">$45.00</p>
+                        <div class="mt-2">
+                            <label for="quantity" class="sr-only">Quantity</label>
+                            <input type="number" id="quantity" value="1" min="1" class="w-16 text-center border rounded-md p-1">
+                        </div>
+                    </div>
+                </div>
+                <!-- More items can be added here -->
+            </div>
+
+            <!-- Order Summary -->
+            <div class="w-full lg:w-80">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-semibold mb-4">Summary</h2>
+                    <div class="flex justify-between mb-2">
+                        <span>Subtotal</span>
+                        <span>$45.00</span>
+                    </div>
+                    <div class="flex justify-between mb-4">
+                        <span>Shipping</span>
+                        <span>$5.00</span>
+                    </div>
+                    <div class="border-t pt-4 flex justify-between font-bold text-lg">
+                        <span>Total</span>
+                        <span>$50.00</span>
+                    </div>
+                    <button class="w-full bg-green-700 text-white py-3 rounded-lg mt-6 hover:bg-green-800 transition-all text-lg">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-500 text-white text-center py-10">
+        <p class="text-sm">&copy; 2025 Modern->Spa. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Body Treatments | Modern->Spa</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CUSTOM STYLES FOR THE "ALCHEMIST'S GARDEN" EXPERIENCE --- */
+        :root {
+            --bg-light: #F8F6F2;
+            --text-light: #524e4a;
+            --heading-light: #3D5245; /* Earthy Green */
+            --accent-light: #EAE3D9; /* Soft Beige */
+            --cta-gold: #BCA06B;
+
+            --bg-dark: #1E2A24; /* Deep Charcoal Green */
+            --text-dark: #A8B8A0; /* Muted Sage Green */
+            --heading-dark: #EAE3D9;
+        }
+
+        /* --- Base & Typography --- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-light);
+            transition: color 0.5s ease;
+            font-weight: 600;
+        }
+
+        /* --- Dark Mode --- */
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4 {
+            color: var(--heading-dark);
+        }
+        html.dark .treatment-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        html.dark .book-button {
+            color: var(--bg-dark);
+        }
+
+        /* --- Hero Section & Video --- */
+        .hero { height: 100vh; }
+        .hero video {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: auto; height: auto;
+            min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        .hero-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        }
+
+        /* --- Scroll-Triggered Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- Treatment & Ingredient Styling --- */
+        .treatment-card {
+            background-color: #ffffff;
+            border: 1px solid var(--accent-light);
+            border-radius: 8px;
+            transition: all 0.4s ease;
+        }
+        .ingredient-spotlight {
+            position: relative;
+            background-color: var(--accent-light);
+            border-radius: 9999px;
+            transition: background-color 0.3s ease;
+        }
+        .ingredient-spotlight .ingredient-name {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--heading-light);
+            color: var(--bg-light);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .ingredient-spotlight:hover .ingredient-name {
+            opacity: 1;
+            visibility: visible;
+            bottom: 120%;
+        }
+        html.dark .ingredient-spotlight {
+             background-color: rgba(0,0,0,0.2);
+        }
+        html.dark .ingredient-spotlight .ingredient-name {
+            background-color: var(--heading-dark);
+            color: var(--bg-dark);
+        }
+
+        /* --- Buttons & Fixed Controls --- */
+        .book-button {
+            background-color: var(--cta-gold);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px -5px rgba(188, 160, 107, 0.5);
+        }
+        .book-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(188, 160, 107, 0.6);
+        }
+        .fixed-controls { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 1rem; }
+        .control-btn { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 9999px; padding: 0.75rem; color: white; cursor: pointer; transition: all 0.3s ease; }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.2); }
+        html.dark .control-btn { background-color: rgba(0, 0, 0, 0.2); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed-controls">
+        <a href="index.html" aria-label="Back to Main Site" class="control-btn" title="Back to Main Site">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="control-btn" title="Toggle Theme">
+            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+    </div>
+
+    <header class="hero relative overflow-hidden flex items-end justify-center text-center text-white">
+        <video autoplay loop muted playsinline>
+             <source src="https://videos.pexels.com/video-files/4059099/4059099-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 p-8 mb-16 reveal visible">
+            <h1 class="text-5xl md:text-7xl">The Body, Reimagined</h1>
+            <p class="text-xl md:text-2xl mt-4 font-light">Elemental treatments crafted from nature's purest essences.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-24 px-6">
+            <div class="max-w-3xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Purity is our Principle.</h2>
+                <div class="text-lg leading-relaxed space-y-4">
+                    <p>We believe the skin is a mirror to our well-being. Our body treatments are not mere applications; they are holistic rituals designed to purify, nourish, and restore.</p>
+                    <p>We source Cambodia’s most potent botanicals—ancient clays, mineral-rich salts from Kampot, and vitamin-laden fruits—transforming them through modern alchemy into powerful elixirs for your skin.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 bg-white dark:bg-black/20">
+            <div class="max-w-7xl mx-auto space-y-24">
+                
+                <article class="grid md:grid-cols-2 gap-12 items-center reveal">
+                    <div class="md:order-2">
+                        <img src="https://i.pinimg.com/564x/27/7d/53/277d531eda6c65971485a3c749964177.jpg" alt="A bowl of rich, dark healing clay ready for a body wrap" class="rounded-lg shadow-xl w-full h-auto object-cover">
+                    </div>
+                    <div class="md:order-1">
+                        <h3 class="text-4xl mb-3">Terra Detox Wrap</h3>
+                        <p class="text-lg font-light mb-6">An Earthly Embrace of Purification.</p>
+                        <p class="mb-8">Surrender to the warmth as a blend of Khmer healing clay, ginger, and turmeric is painted onto your body. Cocooned in natural linens, this wrap draws out impurities, reduces inflammation, and tones the skin, leaving you feeling cleansed from the inside out.</p>
+                        <h4 class="text-sm uppercase tracking-widest mb-4">Key Ingredients</h4>
+                        <div class="flex gap-4 mb-8">
+                            <div class="ingredient-spotlight p-3"><img src="https://i.imgur.com/gKzC2QL.png" class="h-8 w-8"><span class="ingredient-name">Khmer Clay</span></div>
+                            <div class="ingredient-spotlight p-3"><img src="https://i.imgur.com/x4hWzGg.png" class="h-8 w-8"><span class="ingredient-name">Ginger Root</span></div>
+                            <div class="ingredient-spotlight p-3"><img src="https://i.imgur.com/j8i5BQR.png" class="h-8 w-8"><span class="ingredient-name">Turmeric</span></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+                             <span class="font-semibold text-lg">75 Minutes</span>
+                             <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full text-sm">Schedule Renewal</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="grid md:grid-cols-2 gap-12 items-center reveal">
+                     <div>
+                        <img src="https://i.pinimg.com/564x/01/f9/52/01f952f44778330a84566c303f8488e1.jpg" alt="Sea salt, citrus peels, and oils arranged for a body polish" class="rounded-lg shadow-xl w-full h-auto object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-4xl mb-3">Lumina Salt Polish</h3>
+                        <p class="text-lg font-light mb-6">Awaken Your Skin's Brilliance.</p>
+                        <p class="mb-8">An invigorating polish using fine Kampot sea salt to gently exfoliate dead cells, while kaffir lime and lemongrass essential oils stimulate circulation and tone the skin. This treatment concludes with a hydrating application of moringa oil, revealing luminous, silky-smooth skin.</p>
+                        <h4 class="text-sm uppercase tracking-widest mb-4">Key Ingredients</h4>
+                        <div class="flex gap-4 mb-8">
+                            <div class="ingredient-spotlight p-3"><img src="https://i.imgur.com/XwY4n7N.png" class="h-8 w-8"><span class="ingredient-name">Kampot Salt</span></div>
+                            <div class="ingredient-spotlight p-3"><img src="https://i.imgur.com/k1yq1U6.png" class="h-8 w-8"><span class="ingredient-name">Kaffir Lime</span></div>
+                            <div class="ingredient-spotlight p-3"><img src="https://i.imgur.com/qFp9C5W.png" class="h-8 w-8"><span class="ingredient-name">Moringa Oil</span></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+                             <span class="font-semibold text-lg">60 Minutes</span>
+                             <a href="#booking" class="book-button font-medium py-3 px-6 rounded-full text-sm">Schedule Renewal</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        
+        <section class="py-24 px-6">
+            <div class="max-w-5xl mx-auto text-center reveal">
+                <h2 class="text-4xl md:text-5xl mb-12">The Art of the Blend</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <img src="https://i.pinimg.com/564x/e7/bb/c2/e7bbc256a8779f2af4252f8c5b045e07.jpg" alt="Mortar and pestle with herbs" class="rounded-lg shadow-md h-full w-full object-cover aspect-square transition duration-300 hover:scale-105">
+                    <img src="https://i.pinimg.com/564x/8e/31/3e/8e313eb175b9f7a77e0c7a829e2c65a0.jpg" alt="Close up of essential oil dropping into a bowl" class="rounded-lg shadow-md h-full w-full object-cover aspect-square transition duration-300 hover:scale-105">
+                    <img src="https://i.pinimg.com/564x/0f/65/52/0f6552a8758866195743a1372b644f12.jpg" alt="Texture of a body scrub mixture" class="rounded-lg shadow-md h-full w-full object-cover aspect-square transition duration-300 hover:scale-105">
+                    <img src="https://i.pinimg.com/564x/f7/a8/19/f7a8190d65a254c4a675f284534731c6.jpg" alt="Candles and spa elements" class="rounded-lg shadow-md h-full w-full object-cover aspect-square transition duration-300 hover:scale-105">
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="py-24 px-6 text-center bg-accent-light dark:bg-black/20">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl mb-6">Craft Your Transformation</h2>
+                <p class="text-lg leading-relaxed mb-10">Your weekend of renewal is waiting. Contact us to schedule your personalized body treatment and let our alchemists guide you to a state of profound well-being.</p>
+                <a href="mailto:spa@modernserenity.com?subject=Body Treatment Booking" class="book-button inline-block text-xl font-medium py-4 px-10 rounded-full">
+                    Book Your Treatment
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 px-6 text-center border-t border-gray-200 dark:border-gray-800">
+         <p class="text-sm">&copy; 2025 Modern->Spa. All Rights Reserved. <a href="index.html" class="underline hover:text-cta-gold">Return to Main Site</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLL REVEAL SCRIPT ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- THEME TOGGLE SCRIPT ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const docElement = document.documentElement;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    docElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    docElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>
